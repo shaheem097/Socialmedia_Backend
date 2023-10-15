@@ -20,7 +20,7 @@ export const userRepositoryMongoDB=()=>{
     return user
   }
   const getUserByPhone=async(phone:number)=>{
-    console.log(phone,"phone varunnund");
+    // console.log(phone,"phone varunnund");
     
     const user:any=await User.findOne({phone:phone});
     return user

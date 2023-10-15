@@ -36,21 +36,46 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         //     if(userExist.isBlock){
         //         res.json({blocked:"Blocked by admin"})
         if (user.status === true) {
+            console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
             res.json({ status: true, user });
         }
         else {
             res.json({ status: false });
         }
     });
-    const googleUser = (0, express_async_handler_1.default)(async (req, res) => {
-        console.log("vannuuuuuuuuuuuuuuuuuuuuuuuuu");
+    const loginWithGoogle = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log(req.body, "emailllllllllllllllll");
         const { email } = req.body;
-        console.log(req.body);
         const values = { email };
-        (0, userAuth_1.addUser)(values, dbUserRepository, authServices).then((response) => {
-            console.log(response, "controleriiiiiiiiiiiii");
+        (0, userAuth_1.googleLogin)(values, dbUserRepository, authServices).then((response) => {
             if (response?.status === true) {
-                res.json({ status: true, message: "User registered", response });
+                res.json({ status: true, message: "User Logined", response });
+            }
+            else {
+                res.json({ status: false });
+            }
+        });
+    });
+    const checkotpNumber = (0, express_async_handler_1.default)(async (req, res) => {
+        const { phone } = req.body;
+        const value = { phone };
+        (0, userAuth_1.checkPhone)(value, dbUserRepository).then((response) => {
+            if (response?.status === true) {
+                res.json({ status: true });
+            }
+            else {
+                res.json({ status: false });
+            }
+        });
+    });
+    const loginWithOtp = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log(req.body, "fffffffffffffffffffffffffffff");
+        const { phone } = req.body;
+        const data = { phone };
+        console.log(data, "okkkkkkkkkkkkkkkkkkkkk");
+        (0, userAuth_1.otpLogin)(data, dbUserRepository, authServices).then((response) => {
+            if (response?.status === true) {
+                res.json({ status: true, message: "User Logined", response });
             }
             else {
                 res.json({ status: false });
@@ -60,7 +85,9 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
     return {
         registerUser,
         loginUser,
-        googleUser,
+        loginWithGoogle,
+        checkotpNumber,
+        loginWithOtp
     };
 };
 exports.default = authController;

@@ -17,9 +17,11 @@ const  authRouter=():Router => {
     
     router.post("/login",controllers.loginUser)
     
+    router.post("/google", controllers.loginWithGoogle);
 
-    router.post("/google", controllers.googleUser);
-    
+    router.post("/checkPhoneNumber", controllers.checkotpNumber);
+
+    router.post('/otpLogin',controllers.loginWithOtp)
     
     return router
 }

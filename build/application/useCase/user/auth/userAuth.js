@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = exports.userLogin = exports.userRegister = void 0;
+exports.otpLogin = exports.checkPhone = exports.googleLogin = exports.userLogin = exports.userRegister = void 0;
 const userRegister = async (user, userRepository, authService) => {
     user.email = user.email.toLocaleLowerCase();
     user.phone = user.phone;
@@ -60,7 +60,6 @@ const userLogin = async (user, userRepository, authService) => {
         userId: userExist._id,
         UserName: userExist.username,
     };
-    console.log(userData, "oooooooooooooooooooooooooooooooooooooo");
     if (checkPassword) {
         return { status: true, userData };
     }
@@ -69,11 +68,10 @@ const userLogin = async (user, userRepository, authService) => {
     }
 };
 exports.userLogin = userLogin;
-const addUser = async (user, userRepository, authService) => {
+const googleLogin = async (user, userRepository, authService) => {
     // user.email = user.email.toLowerCase();
     const isEmailExist = await userRepository.getUserByEmail(user.email);
     if (isEmailExist) {
-        console.log(isEmailExist, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         const userId = isEmailExist._id;
         const token = await authService.generateToken(userId.toString());
         console.log(token, "tpken in usecase ethiiiii m,akkaleeeeeeeeeee");
@@ -85,4 +83,28 @@ const addUser = async (user, userRepository, authService) => {
         return { status: true, userData };
     }
 };
-exports.addUser = addUser;
+exports.googleLogin = googleLogin;
+const checkPhone = async (user, userRepository) => {
+    console.log(user.phone, "checkkkkkkkkkkkkkk");
+    const isPhoneExist = await userRepository.getUserByPhone(user.phone);
+    if (isPhoneExist) {
+        return { status: true };
+    }
+};
+exports.checkPhone = checkPhone;
+const otpLogin = async (user, userRepository, authService) => {
+    console.log(user.phone, "loooooooooginnnnnnnnnnnusec");
+    const isPhoneExist = await userRepository.getUserByPhone(user.phone);
+    if (isPhoneExist) {
+        const userId = isPhoneExist._id;
+        const token = await authService.generateToken(userId.toString());
+        console.log(token, "tokken vanneeeeeeeeeeee");
+        const userData = {
+            userId: userId,
+            UserName: isPhoneExist.username,
+            token: token
+        };
+        return { status: true, userData };
+    }
+};
+exports.otpLogin = otpLogin;

@@ -4,7 +4,7 @@ import { userRepositoryMongoDB } from '../../../framework/database/mongodb/repos
 import { AuthServiceInterface } from '../../../application/services/user/userAuthServiceInt';
 import {AuthServices} from "../../../framework/services/user/userAuthServiceImp";
 import {UserDbInterface,userDbRepository} from "../../../application/repositories/user/userRepositoryInf";
-import {userRegister,userLogin,addUser} from "../../../application/useCase/user/auth/userAuth"
+import {userRegister,userLogin,googleLogin,checkPhone,otpLogin} from "../../../application/useCase/user/auth/userAuth"
 
 const authController=(
     authServiceInterface:AuthServiceInterface,
@@ -58,29 +58,67 @@ const authController=(
                     res.json({status:false})
                   }    
     });
-    const googleUser=asyncHandler(async(req:Request,res:Response)=>{
-        console.log("vannuuuuuuuuuuuuuuuuuuuuuuuuu");
-        
+
+    const loginWithGoogle=asyncHandler(async(req:Request,res:Response)=>{
+      console.log(req.body,"emailllllllllllllllll");
+      
         const { email } = req.body;
-    console.log(req.body);
-    const values = { email};
+        const values = { email};
     
-   addUser(values, dbUserRepository, authServices).then((response)=>{
-    console.log(response,"controleriiiiiiiiiiiii");
+   googleLogin(values, dbUserRepository, authServices).then((response)=>{
+  
     if (response?.status===true) {
-      res.json({ status: true, message: "User registered", response });
+      res.json({ status: true, message: "User Logined", response });
     } else {
       res.json({ status: false });
     }
    })
    
+    });
+
+    const checkotpNumber=asyncHandler(async(req:Request,res:Response)=>{
+        const {phone}=req.body
+        const value = { phone};
+
+       checkPhone(value,dbUserRepository).then((response)=>{
+       
+        if(response?.status===true){
+            res.json({ status: true});
+        }else{
+            res.json({status:false})
+        }
+       })
+    });
+
+    const loginWithOtp=asyncHandler(async(req:Request,res:Response)=>{
+
+        
+        console.log(req.body,"fffffffffffffffffffffffffffff");
+        
+      
+        const { phone } = req.body;
+        
+        const data = { phone};
+        console.log(data,"okkkkkkkkkkkkkkkkkkkkk");
+        
+
+        otpLogin(data,dbUserRepository, authServices).then((response)=>{
+            if(response?.status===true){
+                res.json({ status: true, message: "User Logined", response });
+            }else {
+                res.json({ status: false });
+              }
+        })
+
     })
 
 
     return{
         registerUser,
         loginUser,
-        googleUser,
+        loginWithGoogle,
+        checkotpNumber,
+        loginWithOtp
     }
 }
 export default authController;

@@ -85,8 +85,7 @@ export const userLogin=async(
         UserName: userExist.username,
 
     }
-    console.log(userData,"oooooooooooooooooooooooooooooooooooooo");
-    
+   
     if(checkPassword){
         return{status:true,userData}
     }else{
@@ -95,7 +94,7 @@ export const userLogin=async(
 };
 
 
-export const addUser = async (
+export const googleLogin = async (
     user: { email: string},
     userRepository: ReturnType<UserDbInterface>,
     authService: ReturnType<AuthServiceInterface>
@@ -103,8 +102,7 @@ export const addUser = async (
     // user.email = user.email.toLowerCase();
     const isEmailExist: any = await userRepository.getUserByEmail(user.email);
     if (isEmailExist) {
-        console.log(isEmailExist,"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-
+       
     const userId = isEmailExist._id
     const token = await authService.generateToken(userId.toString());
     console.log(token,"tpken in usecase ethiiiii m,akkaleeeeeeeeeee");
@@ -115,10 +113,46 @@ export const addUser = async (
     }
         return { status: true,userData};
     
-     
       }
-  
     
+    };
+
+    export const checkPhone=async(
+        user:{
+            phone:number;
+        },
+        userRepository:ReturnType<UserDbInterface>,
+    )=>{
+        console.log(user.phone,"checkkkkkkkkkkkkkk");
+        
+     const isPhoneExist:any=await userRepository.getUserByPhone(user.phone);
+     if(isPhoneExist){
+      
+        return {status:true};
+     }
+    };
+
+    export const otpLogin=async(
+        user:{phone:number},
+        userRepository: ReturnType<UserDbInterface>,
+        authService: ReturnType<AuthServiceInterface>
+    )=>{
+        console.log(user.phone,"loooooooooginnnnnnnnnnnusec");
+
+        const isPhoneExist:any=await userRepository.getUserByPhone(user.phone);
+      if(isPhoneExist){
+        const userId=isPhoneExist._id
+        const token = await authService.generateToken(userId.toString());
+    console.log(token,"tokken vanneeeeeeeeeeee");
+    const userData={
+        userId:userId,
+        UserName:isPhoneExist.username,
+        token:token
+    }
+
+    return {status:true,userData}
+
+      }
     }
   
   
