@@ -17,12 +17,16 @@ const userDbRepository = (repository) => {
     const getUserValid = async (email) => {
         return repository.getUserValid(email);
     };
+    const getAllUsers = async () => {
+        return repository.getAllUsers();
+    };
     return {
         addUser,
         getUserByEmail,
         getUserValid,
         getUserByPhone,
-        getUserByName
+        getUserByName,
+        getAllUsers
     };
 };
 exports.userDbRepository = userDbRepository;

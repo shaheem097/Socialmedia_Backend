@@ -55,6 +55,10 @@ const newUserGoogle=async(user:{
     console.log(error);
   }
   
+};
+const getAllUsers=async()=>{
+  const users:any =await User.find();
+  return users;
 }
 
     return{
@@ -63,7 +67,8 @@ const newUserGoogle=async(user:{
         getUserValid,
         newUserGoogle,
         getUserByPhone,
-        getUserByName
+        getUserByName,
+        getAllUsers
     }
 
 }

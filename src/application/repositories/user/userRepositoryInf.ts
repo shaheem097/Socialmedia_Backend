@@ -29,7 +29,9 @@ export const userDbRepository=(
         return repository.getUserValid(email);
     };
     
-   
+   const getAllUsers=async()=>{
+    return repository.getAllUsers()
+   }
 
 
 
@@ -38,7 +40,8 @@ export const userDbRepository=(
     getUserByEmail,
     getUserValid,
     getUserByPhone,
-    getUserByName
+    getUserByName,
+    getAllUsers
     };
     
 }

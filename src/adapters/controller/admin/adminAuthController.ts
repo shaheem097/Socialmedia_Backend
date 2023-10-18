@@ -28,6 +28,7 @@ const adminAuthController=(
     });
     return {
         loginAdmin,
+        
     }
 }
 

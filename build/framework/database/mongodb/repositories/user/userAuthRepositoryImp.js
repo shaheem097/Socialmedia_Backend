@@ -45,13 +45,18 @@ const userRepositoryMongoDB = () => {
             console.log(error);
         }
     };
+    const getAllUsers = async () => {
+        const users = await userModel_1.default.find();
+        return users;
+    };
     return {
         addUser,
         getUserByEmail,
         getUserValid,
         newUserGoogle,
         getUserByPhone,
-        getUserByName
+        getUserByName,
+        getAllUsers
     };
 };
 exports.userRepositoryMongoDB = userRepositoryMongoDB;
