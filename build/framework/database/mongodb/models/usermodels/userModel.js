@@ -24,18 +24,9 @@ const userSchema = new mongoose_1.Schema({
     bio: {
         type: String,
     },
-    // gender: {
-    //   type: String,
-    // },
     location: {
         type: String,
     },
-    // facebook: {
-    //   type: String,
-    // },
-    // instagram:{
-    //     type:String
-    // },
     isBlock: {
         type: Boolean,
         default: false,

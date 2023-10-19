@@ -17,7 +17,9 @@ const adminAuthRouter = () => {
     const adminControllers = (0, adminAuthController_1.default)(adminAuthServiceInt_1.AdminAuthServiceInterface, adminAuthServiceImp_1.adminAuthServices, adminRepositoryInf_1.adminDbRepository, adminAuthRepository_1.adminRepositoryMongodb);
     const controllers = (0, userController_1.default)(userRepositoryInf_1.userDbRepository, userAuthRepositoryImp_1.userRepositoryMongoDB);
     router.post("/login", adminControllers.loginAdmin);
-    router.post("/view-users", controllers.getUsers);
+    router.get("/view-users", controllers.getUsers);
+    router.put('/block/:userId', controllers.blockUser);
+    router.put('/unblock/:userId', controllers.unblockUser);
     return router;
 };
 exports.default = adminAuthRouter;

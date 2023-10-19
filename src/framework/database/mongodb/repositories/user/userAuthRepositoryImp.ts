@@ -25,6 +25,7 @@ export const userRepositoryMongoDB=()=>{
     const user:any=await User.findOne({phone:phone});
     return user
   }
+
   const getUserByName=async(username:string)=>{
     console.log(username,"username varunnund");
     
@@ -59,7 +60,26 @@ const newUserGoogle=async(user:{
 const getAllUsers=async()=>{
   const users:any =await User.find();
   return users;
-}
+};
+
+const blockCurrUser=async(userId:string)=>{
+const status:any=await User.findOneAndUpdate(
+  {_id:userId},
+  {$set:{isBlock:true}},
+  {new:true}
+)
+return status
+};
+
+const unBlockCurrUser = async (userId: string) => {
+  const status: any = await User.findOneAndUpdate(
+    { _id: userId },
+    { $set: { isBlock: false } },
+    { new: true }
+  );
+
+  return status;
+};
 
     return{
         addUser,
@@ -67,8 +87,11 @@ const getAllUsers=async()=>{
         getUserValid,
         newUserGoogle,
         getUserByPhone,
+     
         getUserByName,
-        getAllUsers
+        getAllUsers,
+        blockCurrUser,
+        unBlockCurrUser
     }
 
 }

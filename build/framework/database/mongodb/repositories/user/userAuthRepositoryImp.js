@@ -49,6 +49,14 @@ const userRepositoryMongoDB = () => {
         const users = await userModel_1.default.find();
         return users;
     };
+    const blockCurrUser = async (userId) => {
+        const status = await userModel_1.default.findOneAndUpdate({ _id: userId }, { $set: { isBlock: true } }, { new: true });
+        return status;
+    };
+    const unBlockCurrUser = async (userId) => {
+        const status = await userModel_1.default.findOneAndUpdate({ _id: userId }, { $set: { isBlock: false } }, { new: true });
+        return status;
+    };
     return {
         addUser,
         getUserByEmail,
@@ -56,7 +64,9 @@ const userRepositoryMongoDB = () => {
         newUserGoogle,
         getUserByPhone,
         getUserByName,
-        getAllUsers
+        getAllUsers,
+        blockCurrUser,
+        unBlockCurrUser
     };
 };
 exports.userRepositoryMongoDB = userRepositoryMongoDB;

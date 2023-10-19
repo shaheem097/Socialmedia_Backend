@@ -81,6 +81,7 @@ export const userLogin=async(
    
     const userData={
         token,
+        isBlock:userExist.isBlock,
         userId: userExist._id,
         UserName: userExist.username,
 
@@ -101,7 +102,11 @@ export const googleLogin = async (
   ) => {
     // user.email = user.email.toLowerCase();
     const isEmailExist: any = await userRepository.getUserByEmail(user.email);
-    if (isEmailExist) {
+    const isBlockorNot=isEmailExist.isBlock
+
+    console.log(isBlockorNot,"goooogle block anooooooooo");
+    
+    if (isEmailExist&&!isBlockorNot) {
        
     const userId = isEmailExist._id
     const token = await authService.generateToken(userId.toString());
@@ -109,10 +114,15 @@ export const googleLogin = async (
     const userData = {
       userId : userId,
       UserName : isEmailExist.username,
+      
       token: token
     }
         return { status: true,userData};
     
+      }else if(isBlockorNot===true){
+         return {blocked:true}
+      }else{
+        return {status:false}
       }
     
     };
@@ -126,10 +136,22 @@ export const googleLogin = async (
         console.log(user.phone,"checkkkkkkkkkkkkkk");
         
      const isPhoneExist:any=await userRepository.getUserByPhone(user.phone);
+
+     const isBlockorNot=isPhoneExist.isBlock
+     console.log("Bloooooooock",isBlockorNot);
+     
+
+   
      if(isPhoneExist){
-      
-        return {status:true};
-     }
+
+        if(!isBlockorNot){
+            return {status:true};
+        }else{
+            return {blocked:true};
+        }
+     }else{
+        return {status:false};
+    }
     };
 
     export const otpLogin=async(

@@ -44,16 +44,19 @@ const authController=(
         const {email,password}=req.body;
         const userDetails={email,password};
         const user=await userLogin(userDetails,dbUserRepository,authServices)
-        // if(user.status){
-        //     const {userExist}=user;
-        //     const {token}=user;
-        //     if(userExist.isBlock){
-        //         res.json({blocked:"Blocked by admin"})
-                  
+        console.log(user,'uuuuuuuuuuuse');
+        console.log(user.userData?.isBlock,"blooooock");
+        
+    
                   if(user.status===true){
+
                     console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
-                    
-                    res.json({status:true,user});
+                    if(user.userData?.isBlock===true){
+                        res.json({ blocked: true});
+                    }else{
+                        res.json({status:true,user});
+                    }
+                   
                   }else{
                     res.json({status:false})
                   }    
@@ -66,10 +69,16 @@ const authController=(
         const values = { email};
     
    googleLogin(values, dbUserRepository, authServices).then((response)=>{
+console.log(response,"rrrrrrrrrrrrrsssssssssssss");
+
   
     if (response?.status===true) {
       res.json({ status: true, message: "User Logined", response });
-    } else {
+    }
+    else if(response?.blocked){
+      res.json({blocked:true})
+    } 
+    else {
       res.json({ status: false });
     }
    })
@@ -83,8 +92,13 @@ const authController=(
        checkPhone(value,dbUserRepository).then((response)=>{
        
         if(response?.status===true){
-            res.json({ status: true});
-        }else{
+                res.json({ status: true});
+        }
+        else if(response?.blocked===true){
+           res.json({blocked:true})
+        }
+        
+        else{
             res.json({status:false})
         }
        })

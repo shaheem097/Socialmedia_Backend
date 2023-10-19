@@ -57,6 +57,7 @@ const userLogin = async (user, userRepository, authService) => {
     const token = await authService.generateToken("1234567890".toString());
     const userData = {
         token,
+        isBlock: userExist.isBlock,
         userId: userExist._id,
         UserName: userExist.username,
     };
@@ -71,7 +72,9 @@ exports.userLogin = userLogin;
 const googleLogin = async (user, userRepository, authService) => {
     // user.email = user.email.toLowerCase();
     const isEmailExist = await userRepository.getUserByEmail(user.email);
-    if (isEmailExist) {
+    const isBlockorNot = isEmailExist.isBlock;
+    console.log(isBlockorNot, "goooogle block anooooooooo");
+    if (isEmailExist && !isBlockorNot) {
         const userId = isEmailExist._id;
         const token = await authService.generateToken(userId.toString());
         console.log(token, "tpken in usecase ethiiiii m,akkaleeeeeeeeeee");
@@ -82,13 +85,29 @@ const googleLogin = async (user, userRepository, authService) => {
         };
         return { status: true, userData };
     }
+    else if (isBlockorNot === true) {
+        return { blocked: true };
+    }
+    else {
+        return { status: false };
+    }
 };
 exports.googleLogin = googleLogin;
 const checkPhone = async (user, userRepository) => {
     console.log(user.phone, "checkkkkkkkkkkkkkk");
     const isPhoneExist = await userRepository.getUserByPhone(user.phone);
+    const isBlockorNot = isPhoneExist.isBlock;
+    console.log("Bloooooooock", isBlockorNot);
     if (isPhoneExist) {
-        return { status: true };
+        if (!isBlockorNot) {
+            return { status: true };
+        }
+        else {
+            return { blocked: true };
+        }
+    }
+    else {
+        return { status: false };
     }
 };
 exports.checkPhone = checkPhone;

@@ -21,6 +21,7 @@ export const userDbRepository=(
         return repository.getUserByPhone(phone);
     }
 
+   
     const getUserByName=async(username:string)=>{
         return repository.getUserByName(username);
     }
@@ -33,6 +34,12 @@ export const userDbRepository=(
     return repository.getAllUsers()
    }
 
+   const blockCurrUser = async (userId: string) => {
+    return repository.blockCurrUser(userId);
+  };
+  const unBlockCurrUser = async (userId: string) => {
+    return repository.unBlockCurrUser(userId);
+  };
 
 
     return{
@@ -41,7 +48,10 @@ export const userDbRepository=(
     getUserValid,
     getUserByPhone,
     getUserByName,
-    getAllUsers
+    getAllUsers,
+    blockCurrUser,
+    unBlockCurrUser,
+   
     };
     
 }

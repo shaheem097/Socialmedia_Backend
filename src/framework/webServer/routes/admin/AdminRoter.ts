@@ -21,7 +21,11 @@ const adminAuthRouter=()=>{
 
     router.post("/login",adminControllers.loginAdmin)
 
-    router.post("/view-users",controllers.getUsers)
+    router.get("/view-users",controllers.getUsers)
+
+    router.put('/block/:userId',controllers.blockUser)
+
+    router.put('/unblock/:userId',controllers.unblockUser)
 
     return router
 };

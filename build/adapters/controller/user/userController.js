@@ -11,8 +11,23 @@ const userControllers = (userDbRepository, userDbRepositoryService) => {
         const data = await (0, userDetails_1.getAllUsers)(dbRepositoryUser);
         res.json({ data });
     });
+    const blockUser = (0, express_async_handler_1.default)(async (req, res) => {
+        const { userId } = req.params;
+        console.log(userId, "iiiiiiddddddddd");
+        const status = await (0, userDetails_1.blockCurrUser)(userId, dbRepositoryUser);
+        console.log(status, "controllerrrrrr");
+        res.json({ status });
+    });
+    const unblockUser = (0, express_async_handler_1.default)(async (req, res) => {
+        const { userId } = req.params;
+        const status = await (0, userDetails_1.unBlockCurrUser)(userId, dbRepositoryUser);
+        console.log(status, "un block controllerrrrrr");
+        res.json({ status });
+    });
     return {
-        getUsers
+        getUsers,
+        blockUser,
+        unblockUser,
     };
 };
 exports.default = userControllers;

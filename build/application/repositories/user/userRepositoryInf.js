@@ -20,13 +20,21 @@ const userDbRepository = (repository) => {
     const getAllUsers = async () => {
         return repository.getAllUsers();
     };
+    const blockCurrUser = async (userId) => {
+        return repository.blockCurrUser(userId);
+    };
+    const unBlockCurrUser = async (userId) => {
+        return repository.unBlockCurrUser(userId);
+    };
     return {
         addUser,
         getUserByEmail,
         getUserValid,
         getUserByPhone,
         getUserByName,
-        getAllUsers
+        getAllUsers,
+        blockCurrUser,
+        unBlockCurrUser,
     };
 };
 exports.userDbRepository = userDbRepository;
