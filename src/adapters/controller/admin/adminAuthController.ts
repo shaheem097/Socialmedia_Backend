@@ -17,6 +17,8 @@ const adminAuthController=(
     const adminAuthServices=AdminAuthServiceInterface(adminAuthService());
 
     const loginAdmin=AsyncHandler(async(req:Request,res:Response)=>{
+        console.log("admin vannu ");
+        
         const {email,password}=req.body;
         const admin={email,password}
         const data=await checkAdmin(admin,dbAdminRepository,adminAuthServices)

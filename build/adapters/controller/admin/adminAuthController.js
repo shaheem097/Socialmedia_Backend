@@ -9,6 +9,7 @@ const adminAuthController = (AdminAuthServiceInterface, adminAuthService, adminD
     const dbAdminRepository = adminDbInterface(adminDbservice());
     const adminAuthServices = AdminAuthServiceInterface(adminAuthService());
     const loginAdmin = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log("admin vannu ");
         const { email, password } = req.body;
         const admin = { email, password };
         const data = await (0, adminAuth_1.checkAdmin)(admin, dbAdminRepository, adminAuthServices);
