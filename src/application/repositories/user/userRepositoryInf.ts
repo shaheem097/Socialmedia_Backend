@@ -41,6 +41,17 @@ export const userDbRepository=(
     return repository.unBlockCurrUser(userId);
   };
 
+  const findSuggest=async(userId:string)=>{
+    return repository.suggestionUser(userId)
+  }
+
+  const putFollower = async(friendId:string,userId:string)=>{
+    return repository.addFollower(friendId,userId)
+  }
+
+  const removeFollow = async(friendId:string,userId:string)=>{
+    return repository.removeFollower(friendId,userId)
+  }
 
     return{
     addUser,
@@ -51,6 +62,9 @@ export const userDbRepository=(
     getAllUsers,
     blockCurrUser,
     unBlockCurrUser,
+    findSuggest,
+    putFollower,
+    removeFollow
    
     };
     

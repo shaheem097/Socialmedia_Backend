@@ -20,7 +20,9 @@ export const userRegister =async(
     user.username=user.username
 
     const isUserNameExist:any=await userRepository.getUserByName(user.username);
+
     const isEmailExist:any=await userRepository.getUserByEmail(user.email);
+    
     const isPhoneExist:any=await userRepository.getUserByPhone(user.phone);
 
     if(isEmailExist&&isPhoneExist&&isUserNameExist){

@@ -22,7 +22,12 @@ const  authRouter=():Router => {
     router.post("/checkPhoneNumber", controllers.checkotpNumber);
 
     router.post('/otpLogin',controllers.loginWithOtp)
+
+    router.get('/find-suggest/:userId',controllers.findSuggest)
     
+    router.put('/:userId/follow',controllers.putFollower)
+
+    router.put('/:userId/unFollow',controllers.putUnFollow)
     return router
 }
 

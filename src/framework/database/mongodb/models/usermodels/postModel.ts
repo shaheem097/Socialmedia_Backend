@@ -10,9 +10,7 @@ const postSchema = new Schema(
             type:String,
             required:true
         },
-        userName:{
-            type:String
-        },
+       
         likes:[],
         comments:[],
         report: [
@@ -27,7 +25,7 @@ const postSchema = new Schema(
               },
             },
           ],
-        image:[],
+        post:[],
         adminDeleted:{
             type:Boolean,
             default:false

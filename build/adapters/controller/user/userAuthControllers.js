@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userAuth_1 = require("../../../application/useCase/user/auth/userAuth");
+const userDetails_1 = require("../../../application/useCase/user/auth/userDetails");
 const authController = (authServiceInterface, authService, UserDbInterface, userDbservice) => {
     const dbUserRepository = UserDbInterface(userDbservice());
     const authServices = authServiceInterface(authService());
@@ -91,12 +92,38 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
             }
         });
     });
+    const findSuggest = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log(req.params, "jyfkhhhhhffjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+        try {
+            const { userId } = req.params;
+            const data = await (0, userDetails_1.suggestFriend)(userId, dbUserRepository);
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const putFollower = (0, express_async_handler_1.default)(async (req, res) => {
+        try {
+            const { id } = req.body;
+            const { userId } = req.params;
+            const data = await (0, userDetails_1.addFollower)(id, userId, dbUserRepository);
+            if (data) {
+                res.json(data);
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         registerUser,
         loginUser,
         loginWithGoogle,
         checkotpNumber,
-        loginWithOtp
+        loginWithOtp,
+        findSuggest,
+        putFollower,
     };
 };
 exports.default = authController;

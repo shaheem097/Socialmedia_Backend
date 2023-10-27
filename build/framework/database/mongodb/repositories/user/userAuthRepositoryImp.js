@@ -57,6 +57,42 @@ const userRepositoryMongoDB = () => {
         const status = await userModel_1.default.findOneAndUpdate({ _id: userId }, { $set: { isBlock: false } }, { new: true });
         return status;
     };
+    const suggestionUser = async (userId) => {
+        try {
+            const data = await userModel_1.default.findById(userId);
+            const followingIds = data.following;
+            const remainingdata = await userModel_1.default.find({
+                $and: [{ _id: { $nin: followingIds } }, { _id: { $ne: userId } }],
+            }).exec();
+            return remainingdata;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    const addFollower = async (friendId, userId) => {
+        console.log(friendId, userId);
+        try {
+            const data = await userModel_1.default.findByIdAndUpdate({ _id: friendId, followers: { $ne: userId } }, {
+                $addToSet: {
+                    followers: userId,
+                },
+            }, {
+                new: true,
+            });
+            const details = await userModel_1.default.findByIdAndUpdate({ _id: userId, following: { $ne: friendId } }, {
+                $addToSet: {
+                    following: friendId
+                },
+            }, {
+                new: true,
+            });
+            return { data, details };
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
     return {
         addUser,
         getUserByEmail,
@@ -66,7 +102,9 @@ const userRepositoryMongoDB = () => {
         getUserByName,
         getAllUsers,
         blockCurrUser,
-        unBlockCurrUser
+        unBlockCurrUser,
+        suggestionUser,
+        addFollower,
     };
 };
 exports.userRepositoryMongoDB = userRepositoryMongoDB;

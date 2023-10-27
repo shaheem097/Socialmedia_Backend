@@ -15,7 +15,7 @@ export const userRepositoryMongoDB=()=>{
     console.log(email,"email varunnund");
     
     const user:any=await User.findOne({email:email});
-    console.log(user,"ddddddddddddddddddddddfffffffffffffffffff");
+
     
     return user
   }
@@ -27,7 +27,7 @@ export const userRepositoryMongoDB=()=>{
   }
 
   const getUserByName=async(username:string)=>{
-    console.log(username,"username varunnund");
+   
     
     const user:any=await User.findOne({username:username});
     return user
@@ -42,7 +42,7 @@ const newUserGoogle=async(user:{
   photoURL:string;
   displayName:string;
 })=>{
-  console.log(user,"gsdfghsdgfhgsdghjfgdshjfghdsjghsfdghjsdgfshdgfhjgfhegjhfdsjhgdj");
+
 
   const {email,displayName,photoURL}=user;
   try {
@@ -81,6 +81,75 @@ const unBlockCurrUser = async (userId: string) => {
   return status;
 };
 
+
+const suggestionUser=async (userId:string)=>{
+  try{
+    const data:any =await User.findById(userId);
+    const followingIds:any =data.following;
+    const remainingdata:any=await User.find({
+      $and:[{_id:{$nin:followingIds}},{_id:{$ne:userId}}],
+
+    }).exec();
+    return remainingdata;
+
+  }catch(error){
+    console.log(error);
+    
+  }
+};
+
+
+const addFollower=async (friendId:string,userId:string)=>{
+  console.log(friendId,userId);
+  try {
+    const data:any=await User.findByIdAndUpdate(
+      {_id:friendId,followers:{$ne:userId} },
+      {
+        $addToSet:{
+          followers:userId,
+        },
+      },
+      {
+        new:true,
+      }
+    )
+    const details:any=await User.findByIdAndUpdate(
+      {_id:userId,following:{$ne:friendId}},
+      {
+         $addToSet:{
+          following:friendId
+         },
+      },
+      {
+        new:true,
+      }
+    );
+    return {data,details}
+  } catch (error) {
+    console.log(error);
+    
+  }
+};
+
+const removeFollower = async (friendId: string, userId: string) => {
+  try {
+    const data = await User.findByIdAndUpdate(
+      { _id: userId },
+      { $pull: { following: friendId } },
+      { new: true }
+    );
+    const details = await User.findByIdAndUpdate(
+      { _id: friendId },
+      { $pull: { followers: userId } },
+      { new: true }
+    );
+    return { data, details };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
     return{
         addUser,
         getUserByEmail,
@@ -91,7 +160,10 @@ const unBlockCurrUser = async (userId: string) => {
         getUserByName,
         getAllUsers,
         blockCurrUser,
-        unBlockCurrUser
+        unBlockCurrUser,
+        suggestionUser,
+        addFollower,
+        removeFollower
     }
 
 }

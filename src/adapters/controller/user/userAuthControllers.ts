@@ -5,7 +5,7 @@ import { AuthServiceInterface } from '../../../application/services/user/userAut
 import {AuthServices} from "../../../framework/services/user/userAuthServiceImp";
 import {UserDbInterface,userDbRepository} from "../../../application/repositories/user/userRepositoryInf";
 import {userRegister,userLogin,googleLogin,checkPhone,otpLogin} from "../../../application/useCase/user/auth/userAuth"
-
+import {suggestFriend,addFollower,removeFollower} from '../../../application/useCase/user/auth/userDetails'
 const authController=(
     authServiceInterface:AuthServiceInterface,
     authService:AuthServices,
@@ -18,7 +18,7 @@ const authController=(
 
 
     const registerUser=asyncHandler(async(req:Request,res:Response)=>{
-        console.log(req.body,"its cominggggggggggg");
+   
         
         const {username,phone,email,password}=req.body
         const user={
@@ -44,13 +44,11 @@ const authController=(
         const {email,password}=req.body;
         const userDetails={email,password};
         const user=await userLogin(userDetails,dbUserRepository,authServices)
-        console.log(user,'uuuuuuuuuuuse');
-        console.log(user.userData?.isBlock,"blooooock");
+       
         
     
                   if(user.status===true){
 
-                    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
                     if(user.userData?.isBlock===true){
                         res.json({ blocked: true});
                     }else{
@@ -63,13 +61,13 @@ const authController=(
     });
 
     const loginWithGoogle=asyncHandler(async(req:Request,res:Response)=>{
-      console.log(req.body,"emailllllllllllllllll");
+     
       
         const { email } = req.body;
         const values = { email};
     
    googleLogin(values, dbUserRepository, authServices).then((response)=>{
-console.log(response,"rrrrrrrrrrrrrsssssssssssss");
+
 
   
     if (response?.status===true) {
@@ -107,13 +105,11 @@ console.log(response,"rrrrrrrrrrrrrsssssssssssss");
     const loginWithOtp=asyncHandler(async(req:Request,res:Response)=>{
 
         
-        console.log(req.body,"fffffffffffffffffffffffffffff");
-        
       
         const { phone } = req.body;
         
         const data = { phone};
-        console.log(data,"okkkkkkkkkkkkkkkkkkkkk");
+      
         
 
         otpLogin(data,dbUserRepository, authServices).then((response)=>{
@@ -124,15 +120,56 @@ console.log(response,"rrrrrrrrrrrrrsssssssssssss");
               }
         })
 
-    })
+    });
 
+    const findSuggest =asyncHandler(async(req:Request,res:Response)=>{
+       
+        
+        try{
+            const {userId}=req.params;
+            const data = await suggestFriend(userId,dbUserRepository)
+            res.json(data)
+        }catch(error){
+            console.log(error);
+            
+        }
+    });
+
+
+    const putFollower=asyncHandler(async(req:Request,res:Response)=>{
+        try{
+            const {id}=req.body;
+            const {userId}=req.params;
+            const data=await addFollower(id,userId,dbUserRepository)
+            if(data){
+                res.json(data)
+            }
+        }catch(error){
+            console.log(error);
+            
+        }
+    });
+
+    const putUnFollow = asyncHandler(async (req: Request, res: Response) => {
+        try {
+          const { id } = req.body;
+          const { userId } = req.params;
+          const data = await removeFollower(id, userId, dbUserRepository);
+          if (data) res.json(data);
+        } catch (error) {
+          console.log(error);
+        }
+      });
 
     return{
         registerUser,
         loginUser,
         loginWithGoogle,
         checkotpNumber,
-        loginWithOtp
+        loginWithOtp,
+        findSuggest,
+        putFollower,
+        putUnFollow,
     }
 }
 export default authController;

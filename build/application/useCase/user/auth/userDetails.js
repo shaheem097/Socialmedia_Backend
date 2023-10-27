@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.unBlockCurrUser = exports.blockCurrUser = exports.getAllUsers = void 0;
+exports.addFollower = exports.suggestFriend = exports.unBlockCurrUser = exports.blockCurrUser = exports.getAllUsers = void 0;
 const getAllUsers = async (userRepository) => {
     try {
         const details = await userRepository.getAllUsers();
@@ -31,3 +31,23 @@ const unBlockCurrUser = async (userId, userRepository) => {
     }
 };
 exports.unBlockCurrUser = unBlockCurrUser;
+const suggestFriend = async (userId, userRepository) => {
+    try {
+        const data = await userRepository.findSuggest(userId);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.suggestFriend = suggestFriend;
+const addFollower = async (friendId, userId, userRepository) => {
+    try {
+        const data = await userRepository.putFollower(friendId, userId);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.addFollower = addFollower;

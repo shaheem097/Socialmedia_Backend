@@ -17,6 +17,8 @@ const authRouter = () => {
     router.post("/google", controllers.loginWithGoogle);
     router.post("/checkPhoneNumber", controllers.checkotpNumber);
     router.post('/otpLogin', controllers.loginWithOtp);
+    router.get('/find-suggest/:userId', controllers.findSuggest);
+    router.put('/:userId/follow', controllers.putFollower);
     return router;
 };
 exports.default = authRouter;

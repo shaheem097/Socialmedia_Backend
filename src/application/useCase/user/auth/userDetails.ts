@@ -38,3 +38,43 @@ export const unBlockCurrUser = async (
       console.log(error);
     }
   };
+
+
+export const suggestFriend=async(userId:string,userRepository:ReturnType<UserDbInterface>)=>{
+    try{
+        const data=await userRepository.findSuggest(userId)
+        return data;
+    }catch(error){
+        console.log(error);
+        
+    }
+};
+
+export const addFollower=async(
+    friendId:string,
+    userId:string,
+    userRepository:ReturnType<UserDbInterface>
+)=>{
+    try{
+        
+        const data=await userRepository.putFollower(friendId,userId)
+        return data;
+    }catch(error){
+        console.log(error);
+        
+    }
+}
+
+
+export const removeFollower = async (
+    friendId: string,
+    userId: string,
+    userRepository: ReturnType<UserDbInterface>
+  ) => {
+    try {
+      const data = await userRepository.removeFollow(friendId, userId);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
