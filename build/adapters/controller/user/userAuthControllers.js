@@ -10,7 +10,6 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
     const dbUserRepository = UserDbInterface(userDbservice());
     const authServices = authServiceInterface(authService());
     const registerUser = (0, express_async_handler_1.default)(async (req, res) => {
-        console.log(req.body, "its cominggggggggggg");
         const { username, phone, email, password } = req.body;
         const user = {
             username,
@@ -31,10 +30,7 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         const { email, password } = req.body;
         const userDetails = { email, password };
         const user = await (0, userAuth_1.userLogin)(userDetails, dbUserRepository, authServices);
-        console.log(user, 'uuuuuuuuuuuse');
-        console.log(user.userData?.isBlock, "blooooock");
         if (user.status === true) {
-            console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
             if (user.userData?.isBlock === true) {
                 res.json({ blocked: true });
             }
@@ -47,11 +43,9 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         }
     });
     const loginWithGoogle = (0, express_async_handler_1.default)(async (req, res) => {
-        console.log(req.body, "emailllllllllllllllll");
         const { email } = req.body;
         const values = { email };
         (0, userAuth_1.googleLogin)(values, dbUserRepository, authServices).then((response) => {
-            console.log(response, "rrrrrrrrrrrrrsssssssssssss");
             if (response?.status === true) {
                 res.json({ status: true, message: "User Logined", response });
             }
@@ -79,10 +73,8 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         });
     });
     const loginWithOtp = (0, express_async_handler_1.default)(async (req, res) => {
-        console.log(req.body, "fffffffffffffffffffffffffffff");
         const { phone } = req.body;
         const data = { phone };
-        console.log(data, "okkkkkkkkkkkkkkkkkkkkk");
         (0, userAuth_1.otpLogin)(data, dbUserRepository, authServices).then((response) => {
             if (response?.status === true) {
                 res.json({ status: true, message: "User Logined", response });
@@ -93,7 +85,6 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         });
     });
     const findSuggest = (0, express_async_handler_1.default)(async (req, res) => {
-        console.log(req.params, "jyfkhhhhhffjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         try {
             const { userId } = req.params;
             const data = await (0, userDetails_1.suggestFriend)(userId, dbUserRepository);
@@ -116,6 +107,54 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
             console.log(error);
         }
     });
+    const putUnFollow = (0, express_async_handler_1.default)(async (req, res) => {
+        try {
+            const { id } = req.body;
+            const { userId } = req.params;
+            const data = await (0, userDetails_1.removeFollower)(id, userId, dbUserRepository);
+            if (data)
+                res.json(data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const getUserDetails = (0, express_async_handler_1.default)(async (req, res) => {
+        try {
+            console.log(req.params, "mol");
+            const { userId } = req.params;
+            const data = await (0, userAuth_1.getUserWithId)(userId, dbUserRepository);
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const checkExistingData = (0, express_async_handler_1.default)(async (req, res) => {
+        const { username, phone, email } = req.body;
+        // Initialize the user object with default values
+        const user = {
+            username: '',
+            email: '',
+            phone: '',
+        };
+        // Check if data is provided and update the user object accordingly
+        if (username)
+            user.username = username;
+        if (email)
+            user.email = email;
+        if (phone)
+            user.phone = phone.toString();
+        console.log(user, "exxisttttttttttttttttttt");
+        const data = await (0, userAuth_1.ExistorNot)(user, dbUserRepository);
+        console.log(data);
+        if (data.status == true) {
+            res.json({ status: true, message: 'Data not exist' });
+        }
+        else {
+            res.json({ status: false, data, message: 'data exist' });
+        }
+    });
     return {
         registerUser,
         loginUser,
@@ -124,6 +163,9 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         loginWithOtp,
         findSuggest,
         putFollower,
+        putUnFollow,
+        getUserDetails,
+        checkExistingData
     };
 };
 exports.default = authController;

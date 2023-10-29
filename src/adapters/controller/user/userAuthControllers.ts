@@ -4,7 +4,9 @@ import { userRepositoryMongoDB } from '../../../framework/database/mongodb/repos
 import { AuthServiceInterface } from '../../../application/services/user/userAuthServiceInt';
 import {AuthServices} from "../../../framework/services/user/userAuthServiceImp";
 import {UserDbInterface,userDbRepository} from "../../../application/repositories/user/userRepositoryInf";
-import {userRegister,userLogin,googleLogin,checkPhone,otpLogin} from "../../../application/useCase/user/auth/userAuth"
+import {userRegister,userLogin,googleLogin,
+       checkPhone,otpLogin,getUserWithId,
+       ExistorNot,profileUpdate} from "../../../application/useCase/user/auth/userAuth"
 import {suggestFriend,addFollower,removeFollower} from '../../../application/useCase/user/auth/userDetails'
 const authController=(
     authServiceInterface:AuthServiceInterface,
@@ -161,6 +163,65 @@ const authController=(
         }
       });
 
+      const getUserDetails = asyncHandler(async (req: Request, res: Response) => {
+        try {
+          console.log(req.params, "mol");
+          const { userId } = req.params;
+          const data = await getUserWithId(userId, dbUserRepository);
+          res.json(data);
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      const checkExistingData = asyncHandler(async (req: Request, res: Response) => {
+        const { username, phone, email } = req.body;
+      
+        // Initialize the user object with default values
+        const user = {
+          username: '',
+          email: '',
+          phone: '',
+        };
+
+        // Check if data is provided and update the user object accordingly
+        if (username) user.username = username;
+        if (email) user.email = email;
+        if (phone) user.phone = phone.toString();
+        console.log(user,"exxisttttttttttttttttttt");
+        const data = await ExistorNot(user, dbUserRepository);
+        console.log(data);
+
+       
+        if (data.status) {
+            res.json({ status: true, message: 'Data does not exist' });
+        } else {
+            res.json({ status: false, message: data.message });
+        }
+        
+      });
+
+
+      const updateUser=asyncHandler(async(req,res)=>{
+        
+        const { username, email,phone,bio,location, profileUrl } = req.body;
+        const {userId}=req.params;
+
+        const userUpdate = await profileUpdate(
+            username,
+            email,
+            phone,
+            bio,
+            location,
+            profileUrl,
+            userId,
+            dbUserRepository,
+            authServices
+          );
+        res.json({ userExist: 'userupdate succeessssssssssss' });
+      })
+
+
     return{
         registerUser,
         loginUser,
@@ -170,6 +231,9 @@ const authController=(
         findSuggest,
         putFollower,
         putUnFollow,
+        getUserDetails,
+        checkExistingData,
+        updateUser,
     }
 }
 export default authController;

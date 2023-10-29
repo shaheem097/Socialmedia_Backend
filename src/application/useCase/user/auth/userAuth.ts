@@ -178,5 +178,67 @@ export const googleLogin = async (
 
       }
     }
-  
-  
+
+    export const getUserWithId = async(userId:string,userRepository:ReturnType<UserDbInterface>)=>{
+        try {
+          const data = await userRepository.getUserIdProfile(userId)
+          return data
+          
+        } catch (error) {
+          console.log(error);
+        }
+    }
+
+    export const ExistorNot = async (user: any, userRepository: ReturnType<UserDbInterface>) => {
+        // Convert email and phone to lowercase if they exist
+        if (user.email) user.email = user.email.toLowerCase();
+      
+        const { username, email, phone } = user;
+      
+        const isUserNameExist = username ? await userRepository.getUserByName(username) : null;
+        const isEmailExist = email ? await userRepository.getUserByEmail(email) : null;
+        const isPhoneExist = phone ? await userRepository.getUserByPhone(phone) : null;
+      
+        if (isEmailExist && isPhoneExist && isUserNameExist) {
+          return { status: false, message: "Username, Email & Phone Number Already Exist" };
+        } else if (isEmailExist && isPhoneExist) {
+          return { status: false, message: "Email & Phone Number Already Exist" };
+        } else if (isUserNameExist && isEmailExist) {
+          return { status: false, message: "Username & Email Already Exist" };
+        } else if (isUserNameExist && isPhoneExist) {
+          return { status: false, message: "Username & Phone Number Already Exist" };
+        } else if (isUserNameExist) {
+          return { status: false, message: "Username Already Exist" };
+        } else if (isEmailExist) {
+          return { status: false, message: "Email Already Exist" };
+        } else if (isPhoneExist) {
+          return { status: false, message: "Phone Number Already Exist" };
+        } else {
+            return { status: true, message: "Data does not exist" };
+          }
+      };
+
+
+    export const profileUpdate=async(
+        username:string,
+        email:string,
+        phone:number,
+        bio:string,
+        location:string,
+        profileUrl:string,
+        userId:string,
+        userRepository: ReturnType<UserDbInterface>,
+        authService: ReturnType<AuthServiceInterface>
+    )=>{
+        const updateUser:any=await userRepository.updateUser(
+            username,
+            email,
+            phone,
+            bio,
+            location,
+            profileUrl,
+            userId,
+        )
+        return updateUser
+    }
+      

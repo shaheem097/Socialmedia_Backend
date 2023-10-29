@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.otpLogin = exports.checkPhone = exports.googleLogin = exports.userLogin = exports.userRegister = void 0;
+exports.ExistorNot = exports.getUserWithId = exports.otpLogin = exports.checkPhone = exports.googleLogin = exports.userLogin = exports.userRegister = void 0;
 const userRegister = async (user, userRepository, authService) => {
     user.email = user.email.toLocaleLowerCase();
     user.phone = user.phone;
@@ -127,3 +127,47 @@ const otpLogin = async (user, userRepository, authService) => {
     }
 };
 exports.otpLogin = otpLogin;
+const getUserWithId = async (userId, userRepository) => {
+    try {
+        const data = await userRepository.getUserIdProfile(userId);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.getUserWithId = getUserWithId;
+const ExistorNot = async (user, userRepository) => {
+    // Convert email and phone to lowercase if they exist
+    if (user.email)
+        user.email = user.email.toLowerCase();
+    const { username, email, phone } = user;
+    const isUserNameExist = username ? await userRepository.getUserByName(username) : null;
+    const isEmailExist = email ? await userRepository.getUserByEmail(email) : null;
+    const isPhoneExist = phone ? await userRepository.getUserByPhone(phone) : null;
+    if (isEmailExist && isPhoneExist && isUserNameExist) {
+        return { status: false, message: "Username, Email & Phone Number Already Exist" };
+    }
+    else if (isEmailExist && isPhoneExist) {
+        return { status: false, message: "Email & Phone Number Already Exist" };
+    }
+    else if (isUserNameExist && isEmailExist) {
+        return { status: false, message: "Username & Email Already Exist" };
+    }
+    else if (isUserNameExist && isPhoneExist) {
+        return { status: false, message: "Username & Phone Number Already Exist" };
+    }
+    else if (isUserNameExist) {
+        return { status: false, message: "Username Already Exist" };
+    }
+    else if (isEmailExist) {
+        return { status: false, message: "Email Already Exist" };
+    }
+    else if (isPhoneExist) {
+        return { status: false, message: "Phone Number Already Exist" };
+    }
+    else {
+        return { status: true };
+    }
+};
+exports.ExistorNot = ExistorNot;

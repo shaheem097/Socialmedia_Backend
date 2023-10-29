@@ -32,6 +32,12 @@ const userDbRepository = (repository) => {
     const putFollower = async (friendId, userId) => {
         return repository.addFollower(friendId, userId);
     };
+    const removeFollow = async (friendId, userId) => {
+        return repository.removeFollower(friendId, userId);
+    };
+    const getUserIdProfile = async (userId) => {
+        return repository.getUserWidget(userId);
+    };
     return {
         addUser,
         getUserByEmail,
@@ -42,7 +48,9 @@ const userDbRepository = (repository) => {
         blockCurrUser,
         unBlockCurrUser,
         findSuggest,
-        putFollower
+        putFollower,
+        removeFollow,
+        getUserIdProfile
     };
 };
 exports.userDbRepository = userDbRepository;

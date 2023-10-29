@@ -28,6 +28,12 @@ const  authRouter=():Router => {
     router.put('/:userId/follow',controllers.putFollower)
 
     router.put('/:userId/unFollow',controllers.putUnFollow)
+
+    router.get("/:userId/user", controllers.getUserDetails);
+
+    router.post('/checkExistingData',controllers.checkExistingData)
+
+    router.put('/:userId/profileUpdate',controllers.updateUser)
     return router
 }
 

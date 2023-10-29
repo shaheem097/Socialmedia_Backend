@@ -13,7 +13,6 @@ const userRepositoryMongoDB = () => {
     const getUserByEmail = async (email) => {
         console.log(email, "email varunnund");
         const user = await userModel_1.default.findOne({ email: email });
-        console.log(user, "ddddddddddddddddddddddfffffffffffffffffff");
         return user;
     };
     const getUserByPhone = async (phone) => {
@@ -22,7 +21,6 @@ const userRepositoryMongoDB = () => {
         return user;
     };
     const getUserByName = async (username) => {
-        console.log(username, "username varunnund");
         const user = await userModel_1.default.findOne({ username: username });
         return user;
     };
@@ -31,7 +29,6 @@ const userRepositoryMongoDB = () => {
         return user;
     };
     const newUserGoogle = async (user) => {
-        console.log(user, "gsdfghsdgfhgsdghjfgdshjfghdsjghsfdghjsdgfshdgfhjgfhegjhfdsjhgdj");
         const { email, displayName, photoURL } = user;
         try {
             const newUser = new userModel_1.default({
@@ -93,6 +90,25 @@ const userRepositoryMongoDB = () => {
             console.log(error);
         }
     };
+    const removeFollower = async (friendId, userId) => {
+        try {
+            const data = await userModel_1.default.findByIdAndUpdate({ _id: userId }, { $pull: { following: friendId } }, { new: true });
+            const details = await userModel_1.default.findByIdAndUpdate({ _id: friendId }, { $pull: { followers: userId } }, { new: true });
+            return { data, details };
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    const getUserWidget = async (userId) => {
+        try {
+            const data = await userModel_1.default.findOne({ _id: userId });
+            return data;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
     return {
         addUser,
         getUserByEmail,
@@ -105,6 +121,8 @@ const userRepositoryMongoDB = () => {
         unBlockCurrUser,
         suggestionUser,
         addFollower,
+        removeFollower,
+        getUserWidget
     };
 };
 exports.userRepositoryMongoDB = userRepositoryMongoDB;

@@ -149,6 +149,44 @@ const removeFollower = async (friendId: string, userId: string) => {
   }
 };
 
+const getUserWidget = async (userId: string) => {
+  try {
+    const data = await User.findOne({ _id: userId });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const updateUserData=async(
+  username:string,
+  email:string,
+  phone:number,
+  bio:string,
+  location:string,
+  profileUrl:string,
+  userId:string
+)=>{
+  try{
+    const user=await User.findOne({_id:userId})
+    if(user){
+     const newUser=await User.updateOne(
+      {_id:userId},
+      {
+        $set:{
+          username:username,
+          email:email,
+          phone:phone,
+          bio:bio,
+          location:location,
+          dp:profileUrl
+        }
+      }
+     )
+    }
+  }
+}
 
     return{
         addUser,
@@ -163,7 +201,10 @@ const removeFollower = async (friendId: string, userId: string) => {
         unBlockCurrUser,
         suggestionUser,
         addFollower,
-        removeFollower
+        removeFollower,
+        getUserWidget,
+        updateUserData,
+
     }
 
 }

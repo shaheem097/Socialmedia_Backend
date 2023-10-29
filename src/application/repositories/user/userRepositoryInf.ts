@@ -53,6 +53,30 @@ export const userDbRepository=(
     return repository.removeFollower(friendId,userId)
   }
 
+  const getUserIdProfile = async(userId:string)=>{
+    return repository.getUserWidget(userId)
+   }
+
+   const updateUser=async(
+    username:string,
+    email:string,
+    phone:number,
+    bio:string,
+    location:string,
+    profileUrl:string,
+    userId:string
+   )=>{
+    return repository.updateUserData(
+      username,
+      email,
+      phone,
+      bio,
+      location,
+      profileUrl,
+      userId
+    )
+   }
+
     return{
     addUser,
     getUserByEmail,
@@ -64,7 +88,9 @@ export const userDbRepository=(
     unBlockCurrUser,
     findSuggest,
     putFollower,
-    removeFollow
+    removeFollow,
+    getUserIdProfile,
+    updateUser,
    
     };
     
