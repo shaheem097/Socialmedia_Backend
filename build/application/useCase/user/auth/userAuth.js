@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExistorNot = exports.getUserWithId = exports.otpLogin = exports.checkPhone = exports.googleLogin = exports.userLogin = exports.userRegister = void 0;
+exports.profileUpdate = exports.ExistorNot = exports.getUserWithId = exports.otpLogin = exports.checkPhone = exports.googleLogin = exports.userLogin = exports.userRegister = void 0;
 const userRegister = async (user, userRepository, authService) => {
     user.email = user.email.toLocaleLowerCase();
     user.phone = user.phone;
@@ -96,19 +96,18 @@ exports.googleLogin = googleLogin;
 const checkPhone = async (user, userRepository) => {
     console.log(user.phone, "checkkkkkkkkkkkkkk");
     const isPhoneExist = await userRepository.getUserByPhone(user.phone);
-    const isBlockorNot = isPhoneExist.isBlock;
-    console.log("Bloooooooock", isBlockorNot);
-    if (isPhoneExist) {
-        if (!isBlockorNot) {
-            return { status: true };
-        }
-        else {
+    console.log(isPhoneExist, "resultttttttt");
+    if (isPhoneExist.status === true) {
+        const isBlock = isPhoneExist.user.isBlock;
+        console.log(isBlock, "block anoooooooooooooo");
+        if (isBlock === true) {
             return { blocked: true };
         }
+        else {
+            return { status: true };
+        }
     }
-    else {
-        return { status: false };
-    }
+    return { status: false };
 };
 exports.checkPhone = checkPhone;
 const otpLogin = async (user, userRepository, authService) => {
@@ -167,7 +166,12 @@ const ExistorNot = async (user, userRepository) => {
         return { status: false, message: "Phone Number Already Exist" };
     }
     else {
-        return { status: true };
+        return { status: true, message: "Data does not exist" };
     }
 };
 exports.ExistorNot = ExistorNot;
+const profileUpdate = async (username, email, phone, bio, location, profileUrl, userId, userRepository, authService) => {
+    const updateUser = await userRepository.updateUser(username, email, phone, bio, location, profileUrl, userId);
+    return updateUser;
+};
+exports.profileUpdate = profileUpdate;

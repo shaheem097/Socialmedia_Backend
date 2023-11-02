@@ -23,7 +23,11 @@ export const userRepositoryMongoDB=()=>{
     // console.log(phone,"phone varunnund");
     
     const user:any=await User.findOne({phone:phone});
-    return user
+
+    
+      return user
+    
+   
   }
 
   const getUserByName=async(username:string)=>{
@@ -181,10 +185,15 @@ const updateUserData=async(
           bio:bio,
           location:location,
           dp:profileUrl
-        }
+        },
       }
-     )
+     );
     }
+    const dataUser=await User.findOne({_id:userId});
+    return dataUser;
+  }catch(error){
+    console.log(error);
+    
   }
 }
 

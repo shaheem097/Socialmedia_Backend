@@ -22,6 +22,7 @@ const authRouter = () => {
     router.put('/:userId/unFollow', controllers.putUnFollow);
     router.get("/:userId/user", controllers.getUserDetails);
     router.post('/checkExistingData', controllers.checkExistingData);
+    router.put('/:userId/profileUpdate', controllers.updateUser);
     return router;
 };
 exports.default = authRouter;

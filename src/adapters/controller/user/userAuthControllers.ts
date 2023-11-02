@@ -95,10 +95,13 @@ const authController=(
                 res.json({ status: true});
         }
         else if(response?.blocked===true){
+            console.log(response.blocked,"srgrwrergsg");
+            
            res.json({blocked:true})
         }
         
         else{
+            console.log(response.blocked,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             res.json({status:false})
         }
        })
@@ -175,6 +178,8 @@ const authController=(
       });
 
       const checkExistingData = asyncHandler(async (req: Request, res: Response) => {
+        console.log(req.body,"fromregisterrrrrrrrrrr");
+        
         const { username, phone, email } = req.body;
       
         // Initialize the user object with default values
@@ -218,7 +223,9 @@ const authController=(
             dbUserRepository,
             authServices
           );
-        res.json({ userExist: 'userupdate succeessssssssssss' });
+          console.log(userUpdate);
+          
+        res.json({ profileupdated: userUpdate });
       })
 
 

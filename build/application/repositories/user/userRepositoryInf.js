@@ -38,6 +38,9 @@ const userDbRepository = (repository) => {
     const getUserIdProfile = async (userId) => {
         return repository.getUserWidget(userId);
     };
+    const updateUser = async (username, email, phone, bio, location, profileUrl, userId) => {
+        return repository.updateUserData(username, email, phone, bio, location, profileUrl, userId);
+    };
     return {
         addUser,
         getUserByEmail,
@@ -50,7 +53,8 @@ const userDbRepository = (repository) => {
         findSuggest,
         putFollower,
         removeFollow,
-        getUserIdProfile
+        getUserIdProfile,
+        updateUser,
     };
 };
 exports.userDbRepository = userDbRepository;

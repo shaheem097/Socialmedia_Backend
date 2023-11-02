@@ -42,7 +42,7 @@ export const userRegister =async(
     }else if(isPhoneExist){
         return {status:false,message:"Phone number Allready Exist"};
     }
-    else{
+    else{ 
       console.log("workingggggggggggggggggggggggg");
       
         let encryptPassword=await authService.encryptPassword(user.password);
@@ -129,32 +129,26 @@ export const googleLogin = async (
     
     };
 
-    export const checkPhone=async(
-        user:{
-            phone:number;
-        },
-        userRepository:ReturnType<UserDbInterface>,
-    )=>{
-        console.log(user.phone,"checkkkkkkkkkkkkkk");
+    export const checkPhone = async (user: { phone: number }, userRepository: ReturnType<UserDbInterface>) => {
+        console.log(user.phone, "checkkkkkkkkkkkkkk");
+      
+        const isPhoneExist: any = await userRepository.getUserByPhone(user.phone);
         
-     const isPhoneExist:any=await userRepository.getUserByPhone(user.phone);
-
-     const isBlockorNot=isPhoneExist.isBlock
-     console.log("Bloooooooock",isBlockorNot);
-     
-
-   
-     if(isPhoneExist){
-
-        if(!isBlockorNot){
-            return {status:true};
-        }else{
-            return {blocked:true};
-        }
-     }else{
-        return {status:false};
-    }
-    };
+       console.log(isPhoneExist,"resultttttttt");
+       
+          if (isPhoneExist) {
+            const isBlock = isPhoneExist.isBlock;
+            console.log(isBlock, "block anoooooooooooooo");
+      
+            if (isBlock === true) {
+              return { blocked: true };
+            } else {
+              return { status: true };
+            }
+          }
+        return { status: false };
+      };
+      
 
     export const otpLogin=async(
         user:{phone:number},

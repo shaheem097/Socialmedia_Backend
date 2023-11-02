@@ -148,12 +148,19 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         console.log(user, "exxisttttttttttttttttttt");
         const data = await (0, userAuth_1.ExistorNot)(user, dbUserRepository);
         console.log(data);
-        if (data.status == true) {
-            res.json({ status: true, message: 'Data not exist' });
+        if (data.status) {
+            res.json({ status: true, message: 'Data does not exist' });
         }
         else {
-            res.json({ status: false, data, message: 'data exist' });
+            res.json({ status: false, message: data.message });
         }
+    });
+    const updateUser = (0, express_async_handler_1.default)(async (req, res) => {
+        const { username, email, phone, bio, location, profileUrl } = req.body;
+        const { userId } = req.params;
+        const userUpdate = await (0, userAuth_1.profileUpdate)(username, email, phone, bio, location, profileUrl, userId, dbUserRepository, authServices);
+        console.log(userUpdate);
+        res.json({ profileupdated: userUpdate });
     });
     return {
         registerUser,
@@ -165,7 +172,8 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         putFollower,
         putUnFollow,
         getUserDetails,
-        checkExistingData
+        checkExistingData,
+        updateUser,
     };
 };
 exports.default = authController;

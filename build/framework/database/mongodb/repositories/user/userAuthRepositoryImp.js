@@ -18,7 +18,12 @@ const userRepositoryMongoDB = () => {
     const getUserByPhone = async (phone) => {
         // console.log(phone,"phone varunnund");
         const user = await userModel_1.default.findOne({ phone: phone });
-        return user;
+        if (user) {
+            return { user, status: true };
+        }
+        else {
+            return { status: false };
+        }
     };
     const getUserByName = async (username) => {
         const user = await userModel_1.default.findOne({ username: username });
@@ -109,6 +114,28 @@ const userRepositoryMongoDB = () => {
             console.log(error);
         }
     };
+    const updateUserData = async (username, email, phone, bio, location, profileUrl, userId) => {
+        try {
+            const user = await userModel_1.default.findOne({ _id: userId });
+            if (user) {
+                const newUser = await userModel_1.default.updateOne({ _id: userId }, {
+                    $set: {
+                        username: username,
+                        email: email,
+                        phone: phone,
+                        bio: bio,
+                        location: location,
+                        dp: profileUrl
+                    },
+                });
+            }
+            const dataUser = await userModel_1.default.findOne({ _id: userId });
+            return dataUser;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
     return {
         addUser,
         getUserByEmail,
@@ -122,7 +149,8 @@ const userRepositoryMongoDB = () => {
         suggestionUser,
         addFollower,
         removeFollower,
-        getUserWidget
+        getUserWidget,
+        updateUserData,
     };
 };
 exports.userRepositoryMongoDB = userRepositoryMongoDB;
