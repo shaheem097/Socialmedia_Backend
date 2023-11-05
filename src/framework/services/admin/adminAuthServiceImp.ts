@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 
 export const adminAuthServices = () => {
   const generateAdminToken = async (id: string) => {
-    if (configKeys.JWT_SECRET) {
-      const token = jwt.sign({ id }, configKeys.JWT_SECRET, {
+    if (configKeys.secretKey) {
+      const token = jwt.sign({ id }, configKeys.secretKey, {
         expiresIn: "30d",
       });
       return token;

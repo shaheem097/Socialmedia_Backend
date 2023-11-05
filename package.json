@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-
   "scripts": {
     "start": "npm run build && npm run dev",
     "build": "tsc",
@@ -18,6 +17,7 @@
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "helmet": "^7.0.0",
+    "jwt-verify-token": "^1.0.10",
     "mongoose": "^7.5.3",
     "nodemailer": "^6.9.6",
     "socket.io": "^4.7.2"

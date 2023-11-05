@@ -43,15 +43,15 @@ export const userRegister =async(
         return {status:false,message:"Phone number Allready Exist"};
     }
     else{ 
-      console.log("workingggggggggggggggggggggggg");
+ 
       
         let encryptPassword=await authService.encryptPassword(user.password);
         user.password=encryptPassword;
         const response=await userRepository.addUser(user);
-        console.log(response,"PPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+ 
         let userId = response._id;
         let UserName=response.username;
-        const token=await authService.generateToken(userId.toString());
+        const token=await authService.generateToken(userId.toString(),UserName);
         console.log(token);
         
         const userData={
@@ -79,7 +79,8 @@ export const userLogin=async(
         user.password,
         userExist.password
     );
-    const token=await authService.generateToken("1234567890".toString())
+
+    const token=await authService.generateToken(userExist._id,userExist.username)
    
     const userData={
         token,
@@ -111,7 +112,8 @@ export const googleLogin = async (
     if (isEmailExist&&!isBlockorNot) {
        
     const userId = isEmailExist._id
-    const token = await authService.generateToken(userId.toString());
+    const username=isEmailExist.username
+    const token = await authService.generateToken(userId.toString(),username);
     console.log(token,"tpken in usecase ethiiiii m,akkaleeeeeeeeeee");
     const userData = {
       userId : userId,
@@ -133,7 +135,7 @@ export const googleLogin = async (
         console.log(user.phone, "checkkkkkkkkkkkkkk");
       
         const isPhoneExist: any = await userRepository.getUserByPhone(user.phone);
-        
+
        console.log(isPhoneExist,"resultttttttt");
        
           if (isPhoneExist) {
@@ -160,7 +162,9 @@ export const googleLogin = async (
         const isPhoneExist:any=await userRepository.getUserByPhone(user.phone);
       if(isPhoneExist){
         const userId=isPhoneExist._id
-        const token = await authService.generateToken(userId.toString());
+        const username=isPhoneExist.username
+
+        const token = await authService.generateToken(userId.toString(),username);
     console.log(token,"tokken vanneeeeeeeeeeee");
     const userData={
         userId:userId,

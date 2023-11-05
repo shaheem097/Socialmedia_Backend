@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkAdmin = void 0;
 const checkAdmin = async (admin, adminRepository, adminAuthService) => {
     let credentials = {
+        adminName: "shaheem",
         email: "admin@gmail.com",
         password: "admin123",
     };

@@ -15,9 +15,13 @@ const authServices = () => {
         console.log(bcryptPassword, "pasword bcrypted");
         return bcryptPassword;
     };
-    const generateToken = async (userId) => {
-        if (config_1.default.JWT_SECRET) {
-            const token = jsonwebtoken_1.default.sign({ userId }, config_1.default.JWT_SECRET, {
+    const generateToken = async (userId, username) => {
+        const user = {
+            id: userId,
+            username: username
+        };
+        if (config_1.default.secretKey) {
+            const token = jsonwebtoken_1.default.sign(user, config_1.default.secretKey, {
                 expiresIn: "30d",
             });
             return token;
@@ -31,8 +35,8 @@ const authServices = () => {
         return passwordMatch;
     };
     const verifyToken = (token) => {
-        if (config_1.default.JWT_SECRET) {
-            const isVerify = jsonwebtoken_1.default.verify(token, config_1.default.JWT_SECRET);
+        if (config_1.default.secretKey) {
+            const isVerify = jsonwebtoken_1.default.verify(token, config_1.default.secretKey);
             return isVerify;
         }
     };

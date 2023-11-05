@@ -8,8 +8,8 @@ const config_1 = __importDefault(require("../../../config/config"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const adminAuthServices = () => {
     const generateAdminToken = async (id) => {
-        if (config_1.default.JWT_SECRET) {
-            const token = jsonwebtoken_1.default.sign({ id }, config_1.default.JWT_SECRET, {
+        if (config_1.default.secretKey) {
+            const token = jsonwebtoken_1.default.sign({ id }, config_1.default.secretKey, {
                 expiresIn: "30d",
             });
             return token;

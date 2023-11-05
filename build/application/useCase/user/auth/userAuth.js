@@ -30,14 +30,12 @@ const userRegister = async (user, userRepository, authService) => {
         return { status: false, message: "Phone number Allready Exist" };
     }
     else {
-        console.log("workingggggggggggggggggggggggg");
         let encryptPassword = await authService.encryptPassword(user.password);
         user.password = encryptPassword;
         const response = await userRepository.addUser(user);
-        console.log(response, "PPPPPPPPPPPPPPPPPPPPPPPPPPPP");
         let userId = response._id;
         let UserName = response.username;
-        const token = await authService.generateToken(userId.toString());
+        const token = await authService.generateToken(userId.toString(), UserName);
         console.log(token);
         const userData = {
             token,
@@ -54,7 +52,7 @@ const userLogin = async (user, userRepository, authService) => {
         return { status: false };
     }
     let checkPassword = await authService.comparePassword(user.password, userExist.password);
-    const token = await authService.generateToken("1234567890".toString());
+    const token = await authService.generateToken(userExist._id, userExist.username);
     const userData = {
         token,
         isBlock: userExist.isBlock,
@@ -76,7 +74,8 @@ const googleLogin = async (user, userRepository, authService) => {
     console.log(isBlockorNot, "goooogle block anooooooooo");
     if (isEmailExist && !isBlockorNot) {
         const userId = isEmailExist._id;
-        const token = await authService.generateToken(userId.toString());
+        const username = isEmailExist.username;
+        const token = await authService.generateToken(userId.toString(), username);
         console.log(token, "tpken in usecase ethiiiii m,akkaleeeeeeeeeee");
         const userData = {
             userId: userId,
@@ -97,8 +96,8 @@ const checkPhone = async (user, userRepository) => {
     console.log(user.phone, "checkkkkkkkkkkkkkk");
     const isPhoneExist = await userRepository.getUserByPhone(user.phone);
     console.log(isPhoneExist, "resultttttttt");
-    if (isPhoneExist.status === true) {
-        const isBlock = isPhoneExist.user.isBlock;
+    if (isPhoneExist) {
+        const isBlock = isPhoneExist.isBlock;
         console.log(isBlock, "block anoooooooooooooo");
         if (isBlock === true) {
             return { blocked: true };
@@ -115,7 +114,8 @@ const otpLogin = async (user, userRepository, authService) => {
     const isPhoneExist = await userRepository.getUserByPhone(user.phone);
     if (isPhoneExist) {
         const userId = isPhoneExist._id;
-        const token = await authService.generateToken(userId.toString());
+        const username = isPhoneExist.username;
+        const token = await authService.generateToken(userId.toString(), username);
         console.log(token, "tokken vanneeeeeeeeeeee");
         const userData = {
             userId: userId,

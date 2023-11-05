@@ -18,12 +18,7 @@ const userRepositoryMongoDB = () => {
     const getUserByPhone = async (phone) => {
         // console.log(phone,"phone varunnund");
         const user = await userModel_1.default.findOne({ phone: phone });
-        if (user) {
-            return { user, status: true };
-        }
-        else {
-            return { status: false };
-        }
+        return user;
     };
     const getUserByName = async (username) => {
         const user = await userModel_1.default.findOne({ username: username });

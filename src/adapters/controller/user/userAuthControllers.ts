@@ -31,29 +31,30 @@ const authController=(
         };
       
       
-        const token = await userRegister(user,dbUserRepository,authServices)
-        console.log(token);
-        if(token.status==true){
-            res.json({status:true,message:"User registerd",token})
+        const UserData:any = await userRegister(user,dbUserRepository,authServices)
+        
+        if(UserData.status==true){
+          console.log(UserData,"fortokeennnnnn");
+      
+            res.json({status:true,message:"User registerd",UserData})
         }else{
-            res.json({status:false,token})
+            res.json({status:false,UserData})
         }
         
     });
 
     const loginUser=asyncHandler(async(req:Request,res:Response)=>{
-    
+   
         const {email,password}=req.body;
         const userDetails={email,password};
-        const user=await userLogin(userDetails,dbUserRepository,authServices)
-       
-        
-    
+        const user:any=await userLogin(userDetails,dbUserRepository,authServices)
+  
                   if(user.status===true){
 
                     if(user.userData?.isBlock===true){
                         res.json({ blocked: true});
                     }else{
+                     
                         res.json({status:true,user});
                     }
                    
@@ -62,28 +63,33 @@ const authController=(
                   }    
     });
 
-    const loginWithGoogle=asyncHandler(async(req:Request,res:Response)=>{
-     
-      
-        const { email } = req.body;
-        const values = { email};
+    const loginWithGoogle = asyncHandler(async (req: Request, res: Response) => {
+      const { email } = req.body;
+      const values = { email };
     
-   googleLogin(values, dbUserRepository, authServices).then((response)=>{
-
-
-  
-    if (response?.status===true) {
-      res.json({ status: true, message: "User Logined", response });
-    }
-    else if(response?.blocked){
-      res.json({blocked:true})
-    } 
-    else {
-      res.json({ status: false });
-    }
-   })
-   
+      try {
+        const response = await googleLogin(values, dbUserRepository, authServices);
+    
+        if (response?.status === true) {
+          if (response.userData) {
+       
+            res.json({ status: true, message: "User Logged in", response });
+          } else {
+            res.status(500).json({ status: false, message: "User data is undefined" });
+          }
+        } else if (response?.blocked) {
+          res.json({ blocked: true });
+        } else {
+          res.status(500).json({ status: false, message: "Login failed" });
+        }
+      } catch (error) {
+        // Handle any errors that may occur during the execution
+        console.error("Error during login:", error);
+        res.status(500).json({ status: false, message: "Internal server error" });
+      }
     });
+    
+        
 
     const checkotpNumber=asyncHandler(async(req:Request,res:Response)=>{
         const {phone}=req.body
@@ -95,13 +101,13 @@ const authController=(
                 res.json({ status: true});
         }
         else if(response?.blocked===true){
-            console.log(response.blocked,"srgrwrergsg");
+
             
            res.json({blocked:true})
         }
         
         else{
-            console.log(response.blocked,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+ 
             res.json({status:false})
         }
        })
@@ -119,6 +125,7 @@ const authController=(
 
         otpLogin(data,dbUserRepository, authServices).then((response)=>{
             if(response?.status===true){
+          
                 res.json({ status: true, message: "User Logined", response });
             }else {
                 res.json({ status: false });
@@ -168,7 +175,7 @@ const authController=(
 
       const getUserDetails = asyncHandler(async (req: Request, res: Response) => {
         try {
-          console.log(req.params, "mol");
+ 
           const { userId } = req.params;
           const data = await getUserWithId(userId, dbUserRepository);
           res.json(data);
@@ -177,10 +184,13 @@ const authController=(
         }
       });
 
-      const checkExistingData = asyncHandler(async (req: Request, res: Response) => {
-        console.log(req.body,"fromregisterrrrrrrrrrr");
+      const  checkExistingData = asyncHandler(async (req: Request, res: Response) => {
         
         const { username, phone, email } = req.body;
+        console.log("hhhhhhhhhhhhhhhhhhhhhhhha");
+        
+        console.log(req.headers);
+        
       
         // Initialize the user object with default values
         const user = {
@@ -193,7 +203,7 @@ const authController=(
         if (username) user.username = username;
         if (email) user.email = email;
         if (phone) user.phone = phone.toString();
-        console.log(user,"exxisttttttttttttttttttt");
+      
         const data = await ExistorNot(user, dbUserRepository);
         console.log(data);
 

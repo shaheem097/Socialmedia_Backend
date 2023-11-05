@@ -4,8 +4,8 @@ export const AuthServiceInterface=(service:AuthServiceReturn)=>{
     const encryptPassword=async(password:string)=>{
     return await service.encryptPassword(password)
     };
-    const generateToken=async(userId:string)=>{
-        return service.generateToken(userId);
+    const generateToken=async(userId:string ,username:string)=>{
+        return service.generateToken(userId,username);
     };
     const comparePassword=async(password:string,bodyPassword:string)=>{
         return await service.comparePassword(password,bodyPassword)

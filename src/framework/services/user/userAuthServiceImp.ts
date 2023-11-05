@@ -14,16 +14,24 @@ export const authServices=()=>{
         
         return bcryptPassword
     };
-    const generateToken=async (userId:string)=>{
-        if(configKeys.JWT_SECRET){
-            const token= jwt.sign({userId},configKeys.JWT_SECRET,{
+    const generateToken=async (userId:string,username:string)=>{
+    const user={
+        id:userId,
+        username:username
+    }
+        if(configKeys.secretKey){
+            const token= jwt.sign(user,configKeys.secretKey,{
                 expiresIn:"30d",
+                
             })
+            console.log(token.length,"tokeeeeeeeeeeeeeeeen");
+            
             return token;
         }else{
             throw new Error("JWT TOKEN is not defined");
 
         }
+
     };
     const comparePassword=async (password:string,bodyPassword:string)=>{
         const passwordMatch=await bcrypt.compare(password,bodyPassword)
@@ -31,8 +39,8 @@ export const authServices=()=>{
 
     };
     const verifyToken=(token:string)=>{
-        if(configKeys.JWT_SECRET){
-            const isVerify=jwt.verify(token,configKeys.JWT_SECRET)
+        if(configKeys.secretKey){
+            const isVerify=jwt.verify(token,configKeys.secretKey)
             return isVerify
         }
     };

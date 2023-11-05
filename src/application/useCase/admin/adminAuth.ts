@@ -7,6 +7,7 @@ export const checkAdmin=async(
   adminAuthService: ReturnType<AdminAuthServiceInterface>
 )=>{
     let credentials = {
+        adminName:"shaheem",
         email: "admin@gmail.com",
         password: "admin123",
       };

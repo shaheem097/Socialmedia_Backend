@@ -4,6 +4,7 @@ import {userRepositoryMongoDB}  from "../../../database/mongodb/repositories/use
 import {AuthServiceInterface}  from "../../../../application/services/user/userAuthServiceInt";
 import {authServices} from "../../../services/user/userAuthServiceImp";
 import authController from "../../../../adapters/controller/user/userAuthControllers"
+const authenticateToken = require('../../middlewares/authenticateToken')
 
 const  authRouter=():Router => {
     const router=express.Router();
@@ -31,9 +32,11 @@ const  authRouter=():Router => {
 
     router.get("/:userId/user", controllers.getUserDetails);
 
-    router.post('/checkExistingData',controllers.checkExistingData)
+    router.post('/checkExistingData',authenticateToken,controllers.checkExistingData)
 
-    router.put('/:userId/profileUpdate',controllers.updateUser)
+    router.post('/checkPhoneExisting',controllers.checkExistingData)
+
+    router.put('/:userId/profileUpdate',authenticateToken,controllers.updateUser)
     return router
 }
 
