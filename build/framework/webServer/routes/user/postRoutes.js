@@ -14,7 +14,8 @@ const postRouter = () => {
     router.post("/:userId", authenticateToken, controllers.addPost);
     // router.get('/getAllPost',authenticateToken,controllers.getAllPost)
     router.get('/getAllPost/:userId', authenticateToken, controllers.fetchPosts);
-    router.get("/userPost/:userId", controllers.fetchUserPosts);
+    router.get("/userPost/:userId", authenticateToken, controllers.fetchUserPosts);
+    router.get('/getusersData/:userId', authenticateToken, controllers.getUsersData);
     return router;
 };
 exports.default = postRouter;

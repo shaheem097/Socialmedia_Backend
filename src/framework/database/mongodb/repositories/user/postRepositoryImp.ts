@@ -35,11 +35,20 @@ const fetchUserPost = async (userId: string) => {
   };
 
 
+const fetchUsersData=async (userId:string)=>{
+    const data=await User.findById(userId);
+
+    console.log(data,"postuserssssssssss");
+    
+    return data
+}  
+
     return {
         addPostDetails,
         getAllPosts,
         getPosts,
-        fetchUserPost
+        fetchUserPost,
+        fetchUsersData
     }
 }
 

@@ -32,11 +32,17 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         const data = await (0, post_2.dataUserPosts)(userId, postRepository);
         res.json(data);
     });
+    const getUsersData = (0, express_async_handler_1.default)(async (req, res) => {
+        const { userId } = req.params;
+        const data = await (0, post_2.postUsersData)(userId, postRepository);
+        res.json(data);
+    });
     return {
         addPost,
         getAllPost,
         fetchPosts,
         fetchUserPosts,
+        getUsersData,
     };
 };
 exports.default = postControllers;

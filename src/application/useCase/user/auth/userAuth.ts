@@ -124,6 +124,11 @@ export const googleLogin = async (
     const userData = {
       userId : userId,
       UserName : isEmailExist.username,
+      dp:isEmailExist?.dp,
+      bio:isEmailExist?.bio,
+      location:isEmailExist?.location,
+      followers:isEmailExist?.followers,
+      following:isEmailExist?.following,
       
       token: token
     }
@@ -172,9 +177,14 @@ export const googleLogin = async (
         const token = await authService.generateToken(userId.toString(),username);
     
     const userData={
+      token:token,
         userId:userId,
         UserName:isPhoneExist.username,
-        token:token
+        dp:isPhoneExist?.dp,
+        bio:isPhoneExist?.bio,
+        location:isPhoneExist?.location,
+        followers:isPhoneExist?.followers,
+        following:isPhoneExist?.following,
     }
 
     return {status:true,userData}

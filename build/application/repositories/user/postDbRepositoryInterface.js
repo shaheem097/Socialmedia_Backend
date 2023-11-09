@@ -14,11 +14,15 @@ const postRepository = (repository) => {
     const fetchUserPosts = async (userId) => {
         return repository.fetchUserPost(userId);
     };
+    const fetchUsersData = async (userId) => {
+        return repository.fetchUsersData(userId);
+    };
     return {
         addPost,
         getAllPosts,
         fetchPosts,
         fetchUserPosts,
+        fetchUsersData
     };
 };
 exports.postRepository = postRepository;

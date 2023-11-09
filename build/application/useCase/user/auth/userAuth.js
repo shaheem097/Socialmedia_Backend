@@ -49,6 +49,8 @@ const userRegister = async (user, userRepository, authService) => {
 exports.userRegister = userRegister;
 const userLogin = async (user, userRepository, authService) => {
     let userExist = await userRepository.getUserValid(user.email);
+    const userDetails = userExist;
+    console.log(userExist, "logindataaaaaaaaaaaaaaaa");
     if (!userExist) {
         return { status: false };
     }
@@ -59,6 +61,11 @@ const userLogin = async (user, userRepository, authService) => {
         isBlock: userExist.isBlock,
         userId: userExist._id,
         UserName: userExist.username,
+        dp: userExist?.dp,
+        bio: userExist?.bio,
+        location: userExist?.location,
+        followers: userExist?.followers,
+        following: userExist?.following,
     };
     if (checkPassword) {
         return { status: true, userData };
@@ -79,6 +86,11 @@ const googleLogin = async (user, userRepository, authService) => {
         const userData = {
             userId: userId,
             UserName: isEmailExist.username,
+            dp: isEmailExist?.dp,
+            bio: isEmailExist?.bio,
+            location: isEmailExist?.location,
+            followers: isEmailExist?.followers,
+            following: isEmailExist?.following,
             token: token
         };
         return { status: true, userData };
@@ -112,9 +124,14 @@ const otpLogin = async (user, userRepository, authService) => {
         const username = isPhoneExist.username;
         const token = await authService.generateToken(userId.toString(), username);
         const userData = {
+            token: token,
             userId: userId,
             UserName: isPhoneExist.username,
-            token: token
+            dp: isPhoneExist?.dp,
+            bio: isPhoneExist?.bio,
+            location: isPhoneExist?.location,
+            followers: isPhoneExist?.followers,
+            following: isPhoneExist?.following,
         };
         return { status: true, userData };
     }

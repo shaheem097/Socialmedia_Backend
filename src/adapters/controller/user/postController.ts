@@ -3,7 +3,7 @@ import asyncHandler from "express-async-handler";
 import { postDbInterface } from "../../../application/repositories/user/postDbRepositoryInterface";
 import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repositories/user/postRepositoryImp";
 import {putData} from  '../../../application/useCase/user/auth/post'
-import {getAllPosts,postData,dataUserPosts} from "../../../application/useCase/user/auth/post"
+import {getAllPosts,postData,dataUserPosts,postUsersData} from "../../../application/useCase/user/auth/post"
 
 const postControllers = (
     postDbRepository: postDbInterface,
@@ -44,11 +44,18 @@ const fetchUserPosts = asyncHandler(async (req: Request, res: Response) => {
   res.json(data);
 });
 
+const getUsersData=asyncHandler(async(req:Request,res:Response)=>{
+  const {userId}=req.params;
+  const data=await postUsersData(userId,postRepository);
+  res.json(data);
+})
+
   return{
     addPost,
     getAllPost,
     fetchPosts,
     fetchUserPosts,
+    getUsersData,
 
   };
 

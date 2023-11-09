@@ -31,11 +31,17 @@ const postRepositoryMongoDb = () => {
         const data = await postModel_1.default.find({ userId: userId });
         return data;
     };
+    const fetchUsersData = async (userId) => {
+        const data = await userModel_1.default.find({ userId: userId });
+        console.log(data, "postuserssssssssss");
+        return data;
+    };
     return {
         addPostDetails,
         getAllPosts,
         getPosts,
-        fetchUserPost
+        fetchUserPost,
+        fetchUsersData
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;

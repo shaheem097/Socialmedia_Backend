@@ -40,4 +40,11 @@ export const dataUserPosts = async (
   return data;
 };    
 
+export const postUsersData=async (
+    userId:string,
+    postDbRepository:ReturnType<postDbInterface>
+)=>{
+    const usersData:any =await postDbRepository.fetchUsersData(userId);
+    return usersData;
+}
     

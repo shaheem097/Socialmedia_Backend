@@ -26,13 +26,16 @@ const fetchPosts = async (userId:string) => {
     return repository.fetchUserPost(userId);
   };
 
-
+const fetchUsersData=async (userId:string)=>{
+    return repository.fetchUsersData(userId)
+}
 
     return{
         addPost,
         getAllPosts,
         fetchPosts,
         fetchUserPosts,
+        fetchUsersData
     }
 };
 
