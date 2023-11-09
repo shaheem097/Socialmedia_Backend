@@ -9,7 +9,7 @@ const userAuthRepositoryImp_1 = require("../../../database/mongodb/repositories/
 const userAuthServiceInt_1 = require("../../../../application/services/user/userAuthServiceInt");
 const userAuthServiceImp_1 = require("../../../services/user/userAuthServiceImp");
 const userAuthControllers_1 = __importDefault(require("../../../../adapters/controller/user/userAuthControllers"));
-const authenticateToken = require('../../middlewares/authenticateToken');
+const authenticateToken = require('../../middlewares/userAuthenticateToken');
 const authRouter = () => {
     const router = express_1.default.Router();
     const controllers = (0, userAuthControllers_1.default)(userAuthServiceInt_1.AuthServiceInterface, userAuthServiceImp_1.authServices, userRepositoryInf_1.userDbRepository, userAuthRepositoryImp_1.userRepositoryMongoDB);
@@ -18,10 +18,10 @@ const authRouter = () => {
     router.post("/google", controllers.loginWithGoogle);
     router.post("/checkPhoneNumber", controllers.checkotpNumber);
     router.post('/otpLogin', controllers.loginWithOtp);
-    router.get('/find-suggest/:userId', controllers.findSuggest);
-    router.put('/:userId/follow', controllers.putFollower);
-    router.put('/:userId/unFollow', controllers.putUnFollow);
-    router.get("/:userId/user", controllers.getUserDetails);
+    router.get('/find-suggest/:userId', authenticateToken, controllers.findSuggest);
+    router.put('/:userId/follow', authenticateToken, controllers.putFollower);
+    router.put('/:userId/unFollow', authenticateToken, controllers.putUnFollow);
+    router.get("/:userId/user", authenticateToken, controllers.getUserDetails);
     router.post('/checkExistingData', authenticateToken, controllers.checkExistingData);
     router.post('/checkPhoneExisting', controllers.checkExistingData);
     router.put('/:userId/profileUpdate', authenticateToken, controllers.updateUser);

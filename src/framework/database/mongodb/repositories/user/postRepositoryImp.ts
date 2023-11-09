@@ -20,10 +20,26 @@ export const postRepositoryMongoDb =()=>{
 const getAllPosts = async()=>{
     const allPosts = await Post.find({});
     return allPosts;
+};
+const getPosts =async(userId:string)=>{
+    const user:any =await User.findById(userId);
+    const followingIds=user.following;
+    followingIds.push(userId)
+    const data=await Post.find({userId:{$in:followingIds}});
+    return data;
 }
+
+const fetchUserPost = async (userId: string) => {
+    const data = await Post.find({ userId: userId });
+    return data;
+  };
+
+
     return {
         addPostDetails,
-        getAllPosts
+        getAllPosts,
+        getPosts,
+        fetchUserPost
     }
 }
 

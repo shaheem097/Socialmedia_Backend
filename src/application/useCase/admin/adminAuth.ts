@@ -16,7 +16,7 @@ export const checkAdmin=async(
         admin.email == credentials.email
       ) {
         let id = 1516239022;
-        const token = await adminAuthService.generateAdminToken(id.toString());
+        const token = await adminAuthService.generateAdminToken(id.toString(),credentials.adminName);
         return { status: true, admin, token };
       } else {
         return { status: false };

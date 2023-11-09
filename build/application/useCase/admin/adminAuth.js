@@ -10,7 +10,7 @@ const checkAdmin = async (admin, adminRepository, adminAuthService) => {
     if (admin.password == credentials.password &&
         admin.email == credentials.email) {
         let id = 1516239022;
-        const token = await adminAuthService.generateAdminToken(id.toString());
+        const token = await adminAuthService.generateAdminToken(id.toString(), credentials.adminName);
         return { status: true, admin, token };
     }
     else {

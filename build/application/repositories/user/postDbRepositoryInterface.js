@@ -8,9 +8,17 @@ const postRepository = (repository) => {
     const getAllPosts = async () => {
         return repository.getAllPosts();
     };
+    const fetchPosts = async (userId) => {
+        return repository.getPosts(userId);
+    };
+    const fetchUserPosts = async (userId) => {
+        return repository.fetchUserPost(userId);
+    };
     return {
         addPost,
-        getAllPosts
+        getAllPosts,
+        fetchPosts,
+        fetchUserPosts,
     };
 };
 exports.postRepository = postRepository;

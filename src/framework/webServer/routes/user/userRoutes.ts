@@ -4,7 +4,7 @@ import {userRepositoryMongoDB}  from "../../../database/mongodb/repositories/use
 import {AuthServiceInterface}  from "../../../../application/services/user/userAuthServiceInt";
 import {authServices} from "../../../services/user/userAuthServiceImp";
 import authController from "../../../../adapters/controller/user/userAuthControllers"
-const authenticateToken = require('../../middlewares/authenticateToken')
+const authenticateToken = require('../../middlewares/userAuthenticateToken')
 
 const  authRouter=():Router => {
     const router=express.Router();
@@ -24,13 +24,13 @@ const  authRouter=():Router => {
 
     router.post('/otpLogin',controllers.loginWithOtp)
 
-    router.get('/find-suggest/:userId',controllers.findSuggest)
+    router.get('/find-suggest/:userId',authenticateToken,controllers.findSuggest)
     
-    router.put('/:userId/follow',controllers.putFollower)
+    router.put('/:userId/follow',authenticateToken,controllers.putFollower)
 
-    router.put('/:userId/unFollow',controllers.putUnFollow)
+    router.put('/:userId/unFollow',authenticateToken,controllers.putUnFollow)
 
-    router.get("/:userId/user", controllers.getUserDetails);
+    router.get("/:userId/user",authenticateToken, controllers.getUserDetails);
 
     router.post('/checkExistingData',authenticateToken,controllers.checkExistingData)
 

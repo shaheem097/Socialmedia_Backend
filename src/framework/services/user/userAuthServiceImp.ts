@@ -24,7 +24,7 @@ export const authServices=()=>{
                 expiresIn:"30d",
                 
             })
-            console.log(token.length,"tokeeeeeeeeeeeeeeeen");
+          
             
             return token;
         }else{

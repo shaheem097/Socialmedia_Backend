@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepositoryMongoDb = void 0;
 const postModel_1 = __importDefault(require("../../models/usermodels/postModel"));
+const userModel_1 = __importDefault(require("../../models/usermodels/userModel"));
 const postRepositoryMongoDb = () => {
     const addPostDetails = async (userId, caption, fileUrl) => {
         const post = {
@@ -19,9 +20,22 @@ const postRepositoryMongoDb = () => {
         const allPosts = await postModel_1.default.find({});
         return allPosts;
     };
+    const getPosts = async (userId) => {
+        const user = await userModel_1.default.findById(userId);
+        const followingIds = user.following;
+        followingIds.push(userId);
+        const data = await postModel_1.default.find({ userId: { $in: followingIds } });
+        return data;
+    };
+    const fetchUserPost = async (userId) => {
+        const data = await postModel_1.default.find({ userId: userId });
+        return data;
+    };
     return {
         addPostDetails,
-        getAllPosts
+        getAllPosts,
+        getPosts,
+        fetchUserPost
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;

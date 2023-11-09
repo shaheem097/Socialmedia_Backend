@@ -12,12 +12,27 @@ export const postRepository=(
     )=>{
         return repository.addPostDetails(userId,caption,fileUrl)
     };
+
+
 const  getAllPosts = async () =>{
    return repository.getAllPosts()
 }
+
+const fetchPosts = async (userId:string) => {
+    return repository.getPosts(userId);
+  };
+
+  const fetchUserPosts = async (userId: string) => {
+    return repository.fetchUserPost(userId);
+  };
+
+
+
     return{
         addPost,
-        getAllPosts
+        getAllPosts,
+        fetchPosts,
+        fetchUserPosts,
     }
 };
 

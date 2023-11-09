@@ -7,9 +7,9 @@ exports.adminAuthServices = void 0;
 const config_1 = __importDefault(require("../../../config/config"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const adminAuthServices = () => {
-    const generateAdminToken = async (id) => {
+    const generateAdminToken = async (id, name) => {
         if (config_1.default.secretKey) {
-            const token = jsonwebtoken_1.default.sign({ id }, config_1.default.secretKey, {
+            const token = jsonwebtoken_1.default.sign({ id, name }, config_1.default.secretKey, {
                 expiresIn: "30d",
             });
             return token;

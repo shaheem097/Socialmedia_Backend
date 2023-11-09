@@ -7,6 +7,7 @@ import { adminRepositoryMongodb } from "../../../database/mongodb/repositories/a
 import { userDbRepository } from "../../../../application/repositories/user/userRepositoryInf";
 import { userRepositoryMongoDB } from "../../../database/mongodb/repositories/user/userAuthRepositoryImp";
 import userControllers from '../../../../adapters/controller/user/userController'
+const adminauthenticateToken = require('../../middlewares/adminAuthenticateToken')
 
 const adminAuthRouter=()=>{
     const router=express.Router();
@@ -21,11 +22,11 @@ const adminAuthRouter=()=>{
 
     router.post("/login",adminControllers.loginAdmin)
 
-    router.get("/view-users",controllers.getUsers)
+    router.get("/view-users",adminauthenticateToken,controllers.getUsers)
 
-    router.put('/block/:userId',controllers.blockUser)
+    router.put('/block/:userId',adminauthenticateToken,controllers.blockUser)
 
-    router.put('/unblock/:userId',controllers.unblockUser)
+    router.put('/unblock/:userId',adminauthenticateToken,controllers.unblockUser)
 
     return router
 };

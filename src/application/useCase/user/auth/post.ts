@@ -23,4 +23,21 @@ export const getAllPosts = async (
 
   
   return data
-}
+};
+
+
+export const postData=async (userId:string,postDbRepository:ReturnType<postDbInterface>
+    )=>{
+        const data:any =await postDbRepository.fetchPosts(userId);
+        return data
+    };
+
+export const dataUserPosts = async (
+  userId: string,
+  postDbRepository: ReturnType<postDbInterface>
+) => {
+  const data: any = await postDbRepository.fetchUserPosts(userId);
+  return data;
+};    
+
+    

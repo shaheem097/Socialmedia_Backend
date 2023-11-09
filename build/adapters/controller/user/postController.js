@@ -22,9 +22,21 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         const response = await (0, post_2.getAllPosts)(postRepository);
         res.json(response);
     };
+    const fetchPosts = async (req, res) => {
+        const { userId } = req.params;
+        const data = await (0, post_2.postData)(userId, postRepository);
+        res.json(data);
+    };
+    const fetchUserPosts = (0, express_async_handler_1.default)(async (req, res) => {
+        const { userId } = req.params;
+        const data = await (0, post_2.dataUserPosts)(userId, postRepository);
+        res.json(data);
+    });
     return {
         addPost,
-        getAllPost
+        getAllPost,
+        fetchPosts,
+        fetchUserPosts,
     };
 };
 exports.default = postControllers;

@@ -48,7 +48,7 @@ export const userRegister =async(
         let encryptPassword=await authService.encryptPassword(user.password);
         user.password=encryptPassword;
         const response=await userRepository.addUser(user);
- 
+        const userdetails=response
         let userId = response._id;
         let UserName=response.username;
         const token=await authService.generateToken(userId.toString(),UserName);
@@ -58,7 +58,6 @@ export const userRegister =async(
            token,
            userId,
            UserName
-
         }
         return {status:true,userData}
     }
@@ -70,6 +69,8 @@ export const userLogin=async(
     authService:ReturnType<AuthServiceInterface>
 )=>{
     let userExist:any =await userRepository.getUserValid(user.email);
+    const userDetails=userExist
+    console.log(userExist,"logindataaaaaaaaaaaaaaaa");
     
     
     if(!userExist){
@@ -84,9 +85,15 @@ export const userLogin=async(
    
     const userData={
         token,
+
         isBlock:userExist.isBlock,
         userId: userExist._id,
         UserName: userExist.username,
+        dp:userExist?.dp,
+        bio:userExist?.bio,
+        location:userExist?.location,
+        followers:userExist?.followers,
+        following:userExist?.following,
 
     }
    
@@ -107,14 +114,13 @@ export const googleLogin = async (
     const isEmailExist: any = await userRepository.getUserByEmail(user.email);
     const isBlockorNot=isEmailExist.isBlock
 
-    console.log(isBlockorNot,"goooogle block anooooooooo");
     
     if (isEmailExist&&!isBlockorNot) {
        
     const userId = isEmailExist._id
     const username=isEmailExist.username
     const token = await authService.generateToken(userId.toString(),username);
-    console.log(token,"tpken in usecase ethiiiii m,akkaleeeeeeeeeee");
+
     const userData = {
       userId : userId,
       UserName : isEmailExist.username,
@@ -132,15 +138,14 @@ export const googleLogin = async (
     };
 
     export const checkPhone = async (user: { phone: number }, userRepository: ReturnType<UserDbInterface>) => {
-        console.log(user.phone, "checkkkkkkkkkkkkkk");
+    
       
         const isPhoneExist: any = await userRepository.getUserByPhone(user.phone);
 
-       console.log(isPhoneExist,"resultttttttt");
+     
        
           if (isPhoneExist) {
             const isBlock = isPhoneExist.isBlock;
-            console.log(isBlock, "block anoooooooooooooo");
       
             if (isBlock === true) {
               return { blocked: true };
@@ -157,7 +162,7 @@ export const googleLogin = async (
         userRepository: ReturnType<UserDbInterface>,
         authService: ReturnType<AuthServiceInterface>
     )=>{
-        console.log(user.phone,"loooooooooginnnnnnnnnnnusec");
+       
 
         const isPhoneExist:any=await userRepository.getUserByPhone(user.phone);
       if(isPhoneExist){
@@ -165,7 +170,7 @@ export const googleLogin = async (
         const username=isPhoneExist.username
 
         const token = await authService.generateToken(userId.toString(),username);
-    console.log(token,"tokken vanneeeeeeeeeeee");
+    
     const userData={
         userId:userId,
         UserName:isPhoneExist.username,
