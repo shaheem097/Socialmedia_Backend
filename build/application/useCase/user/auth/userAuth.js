@@ -33,17 +33,12 @@ const userRegister = async (user, userRepository, authService) => {
         let encryptPassword = await authService.encryptPassword(user.password);
         user.password = encryptPassword;
         const response = await userRepository.addUser(user);
-        const userdetails = response;
         let userId = response._id;
         let UserName = response.username;
         const token = await authService.generateToken(userId.toString(), UserName);
         console.log(token);
-        const userData = {
-            token,
-            userId,
-            UserName
-        };
-        return { status: true, userData };
+        const userData = response;
+        return { status: true, userData, token };
     }
 };
 exports.userRegister = userRegister;
@@ -57,10 +52,9 @@ const userLogin = async (user, userRepository, authService) => {
     let checkPassword = await authService.comparePassword(user.password, userExist.password);
     const token = await authService.generateToken(userExist._id, userExist.username);
     const userData = {
-        token,
         isBlock: userExist.isBlock,
         userId: userExist._id,
-        UserName: userExist.username,
+        username: userExist.username,
         dp: userExist?.dp,
         bio: userExist?.bio,
         location: userExist?.location,
@@ -68,7 +62,7 @@ const userLogin = async (user, userRepository, authService) => {
         following: userExist?.following,
     };
     if (checkPassword) {
-        return { status: true, userData };
+        return { status: true, userData, token };
     }
     else {
         return { status: false };
@@ -85,7 +79,7 @@ const googleLogin = async (user, userRepository, authService) => {
         const token = await authService.generateToken(userId.toString(), username);
         const userData = {
             userId: userId,
-            UserName: isEmailExist.username,
+            username: isEmailExist.username,
             dp: isEmailExist?.dp,
             bio: isEmailExist?.bio,
             location: isEmailExist?.location,
@@ -126,7 +120,7 @@ const otpLogin = async (user, userRepository, authService) => {
         const userData = {
             token: token,
             userId: userId,
-            UserName: isPhoneExist.username,
+            username: isPhoneExist.username,
             dp: isPhoneExist?.dp,
             bio: isPhoneExist?.bio,
             location: isPhoneExist?.location,

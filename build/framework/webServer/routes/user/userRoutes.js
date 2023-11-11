@@ -10,6 +10,7 @@ const userAuthServiceInt_1 = require("../../../../application/services/user/user
 const userAuthServiceImp_1 = require("../../../services/user/userAuthServiceImp");
 const userAuthControllers_1 = __importDefault(require("../../../../adapters/controller/user/userAuthControllers"));
 const authenticateToken = require('../../middlewares/userAuthenticateToken');
+// const authenticateToken=require('jwt-verify-token')
 const authRouter = () => {
     const router = express_1.default.Router();
     const controllers = (0, userAuthControllers_1.default)(userAuthServiceInt_1.AuthServiceInterface, userAuthServiceImp_1.authServices, userRepositoryInf_1.userDbRepository, userAuthRepositoryImp_1.userRepositoryMongoDB);

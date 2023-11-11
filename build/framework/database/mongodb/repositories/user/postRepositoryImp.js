@@ -32,7 +32,7 @@ const postRepositoryMongoDb = () => {
         return data;
     };
     const fetchUsersData = async (userId) => {
-        const data = await userModel_1.default.find({ userId: userId });
+        const data = await userModel_1.default.findById(userId);
         console.log(data, "postuserssssssssss");
         return data;
     };

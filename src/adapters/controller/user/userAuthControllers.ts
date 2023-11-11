@@ -31,12 +31,14 @@ const authController=(
         };
       
       
-        const UserData:any = await userRegister(user,dbUserRepository,authServices)
-        
-        if(UserData.status==true){
-          console.log(UserData,"fortokeennnnnn");
+        const response:any = await userRegister(user,dbUserRepository,authServices)
+        console.log(response,"registerrrrrrr");
+       const UserData=response.userData
+       if(response.status==true){
+         
+         const token=response.token
       
-            res.json({status:true,message:"User registerd",UserData})
+            res.json({status:true,message:"User registerd",UserData,token})
         }else{
             res.json({status:false,UserData})
         }
@@ -48,14 +50,16 @@ const authController=(
         const {email,password}=req.body;
         const userDetails={email,password};
         const user:any=await userLogin(userDetails,dbUserRepository,authServices)
-  
+        
                   if(user.status===true){
 
-                    if(user.userData?.isBlock===true){
+                    const userData=user.userData
+                    const token=user.token
+                    if(userData?.isBlock===true){
                         res.json({ blocked: true});
                     }else{
                      
-                        res.json({status:true,user});
+                        res.json({status:true,userData,token});
                     }
                    
                   }else{
@@ -72,8 +76,9 @@ const authController=(
     
         if (response?.status === true) {
           if (response.userData) {
-       
-            res.json({ status: true, message: "User Logged in", response });
+            const token=response.token
+            const userData=response.userData
+            res.json({ status: true, message: "User Logged in", userData,token});
           } else {
             res.status(500).json({ status: false, message: "User data is undefined" });
           }
@@ -124,9 +129,11 @@ const authController=(
         
 
         otpLogin(data,dbUserRepository, authServices).then((response)=>{
+
             if(response?.status===true){
-          
-                res.json({ status: true, message: "User Logined", response });
+                const userData=response.userData
+                const token=response.token
+                res.json({ status: true, message: "User Logined", userData,token});
             }else {
                 res.json({ status: false });
               }
@@ -149,6 +156,8 @@ const authController=(
 
 
     const putFollower=asyncHandler(async(req:Request,res:Response)=>{
+      console.log("folllllllllllllllllow");
+      
         try{
             const {id}=req.body;
             const {userId}=req.params;
@@ -163,6 +172,8 @@ const authController=(
     });
 
     const putUnFollow = asyncHandler(async (req: Request, res: Response) => {
+      console.log("unfollloolooo");
+      
         try {
           const { id } = req.body;
           const { userId } = req.params;

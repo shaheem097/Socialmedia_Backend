@@ -48,18 +48,20 @@ export const userRegister =async(
         let encryptPassword=await authService.encryptPassword(user.password);
         user.password=encryptPassword;
         const response=await userRepository.addUser(user);
-        const userdetails=response
+        
         let userId = response._id;
         let UserName=response.username;
         const token=await authService.generateToken(userId.toString(),UserName);
         console.log(token);
         
         const userData={
-           token,
            userId,
-           UserName
+           UserName,
+           followers:response.followers,
+           following:response.following
+
         }
-        return {status:true,userData}
+        return {status:true,userData,token}
     }
 };
 
@@ -84,11 +86,9 @@ export const userLogin=async(
     const token=await authService.generateToken(userExist._id,userExist.username)
    
     const userData={
-        token,
-
         isBlock:userExist.isBlock,
         userId: userExist._id,
-        UserName: userExist.username,
+        username: userExist.username,
         dp:userExist?.dp,
         bio:userExist?.bio,
         location:userExist?.location,
@@ -98,7 +98,7 @@ export const userLogin=async(
     }
    
     if(checkPassword){
-        return{status:true,userData}
+        return{status:true,userData,token}
     }else{
         return {status:false}
     }
@@ -123,16 +123,14 @@ export const googleLogin = async (
 
     const userData = {
       userId : userId,
-      UserName : isEmailExist.username,
+      username : isEmailExist.username,
       dp:isEmailExist?.dp,
       bio:isEmailExist?.bio,
       location:isEmailExist?.location,
       followers:isEmailExist?.followers,
       following:isEmailExist?.following,
-      
-      token: token
     }
-        return { status: true,userData};
+        return { status: true,userData,token};
     
       }else if(isBlockorNot===true){
          return {blocked:true}
@@ -177,9 +175,8 @@ export const googleLogin = async (
         const token = await authService.generateToken(userId.toString(),username);
     
     const userData={
-      token:token,
         userId:userId,
-        UserName:isPhoneExist.username,
+        username:isPhoneExist.username,
         dp:isPhoneExist?.dp,
         bio:isPhoneExist?.bio,
         location:isPhoneExist?.location,
@@ -187,7 +184,7 @@ export const googleLogin = async (
         following:isPhoneExist?.following,
     }
 
-    return {status:true,userData}
+    return {status:true,userData,token}
 
       }
     }

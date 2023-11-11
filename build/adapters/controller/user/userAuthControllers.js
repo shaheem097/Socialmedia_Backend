@@ -17,10 +17,12 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
             email,
             password,
         };
-        const UserData = await (0, userAuth_1.userRegister)(user, dbUserRepository, authServices);
-        if (UserData.status == true) {
-            console.log(UserData, "fortokeennnnnn");
-            res.json({ status: true, message: "User registerd", UserData });
+        const response = await (0, userAuth_1.userRegister)(user, dbUserRepository, authServices);
+        console.log(response, "registerrrrrrr");
+        const UserData = response.userData;
+        const token = response.token;
+        if (response.status == true) {
+            res.json({ status: true, message: "User registerd", UserData, token });
         }
         else {
             res.json({ status: false, UserData });
@@ -31,11 +33,13 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         const userDetails = { email, password };
         const user = await (0, userAuth_1.userLogin)(userDetails, dbUserRepository, authServices);
         if (user.status === true) {
-            if (user.userData?.isBlock === true) {
+            const userData = user.userData;
+            const token = user.token;
+            if (userData?.isBlock === true) {
                 res.json({ blocked: true });
             }
             else {
-                res.json({ status: true, user });
+                res.json({ status: true, userData, token });
             }
         }
         else {
@@ -106,6 +110,7 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         }
     });
     const putFollower = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log("folllllllllllllllllow");
         try {
             const { id } = req.body;
             const { userId } = req.params;
@@ -119,6 +124,7 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         }
     });
     const putUnFollow = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log("unfollloolooow");
         try {
             const { id } = req.body;
             const { userId } = req.params;

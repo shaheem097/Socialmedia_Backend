@@ -5,7 +5,7 @@ import {AuthServiceInterface}  from "../../../../application/services/user/userA
 import {authServices} from "../../../services/user/userAuthServiceImp";
 import authController from "../../../../adapters/controller/user/userAuthControllers"
 const authenticateToken = require('../../middlewares/userAuthenticateToken')
-
+// const authenticateToken=require('jwt-verify-token')
 const  authRouter=():Router => {
     const router=express.Router();
     const controllers=authController(
