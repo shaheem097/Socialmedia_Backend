@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { postDbInterface } from "../../../application/repositories/user/postDbRepositoryInterface";
 import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repositories/user/postRepositoryImp";
-import {putData} from  '../../../application/useCase/user/auth/post'
-import {getAllPosts,postData,dataUserPosts,postUsersData} from "../../../application/useCase/user/auth/post"
+import {getAllPosts,postData,dataUserPosts,postUsersData,putData,putLike,putUnLike,} from "../../../application/useCase/user/auth/post"
 
 const postControllers = (
     postDbRepository: postDbInterface,
@@ -48,7 +47,35 @@ const getUsersData=asyncHandler(async(req:Request,res:Response)=>{
   const {userId}=req.params;
   const data=await postUsersData(userId,postRepository);
   res.json(data);
-})
+});
+
+
+const likedPost=asyncHandler(async(req:Request,res:Response)=>{
+  console.log('like');
+  
+  try{
+    const {userId}=req.body;
+    const {postId}=req.params;
+    const data=await putLike(postId,userId,postRepository)
+    if(data) res.json(data);
+  }catch(error){
+    console.log(error);
+    
+  }
+});
+
+const unLikePost = asyncHandler(async (req: Request, res: Response) => {
+  console.log('Un like');
+  try {
+    const { userId } = req.body;
+    console.log(req.body);
+    const { postId } = req.params;
+    const data = await putUnLike(postId, userId, postRepository);
+    if (data) res.json(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
   return{
     addPost,
@@ -56,6 +83,8 @@ const getUsersData=asyncHandler(async(req:Request,res:Response)=>{
     fetchPosts,
     fetchUserPosts,
     getUsersData,
+    likedPost,
+    unLikePost
 
   };
 

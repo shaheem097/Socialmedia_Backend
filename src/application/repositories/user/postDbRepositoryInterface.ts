@@ -28,14 +28,23 @@ const fetchPosts = async (userId:string) => {
 
 const fetchUsersData=async (userId:string)=>{
     return repository.fetchUsersData(userId)
-}
+};
+const likePost = async (postId: string, userId: string) => {
+    return repository.postLike(postId, userId);
+  };
+  const unLikePost = async (postId: string, userId: string) => {
+    return repository.unLike(postId, userId);
+  };
 
     return{
         addPost,
         getAllPosts,
         fetchPosts,
         fetchUserPosts,
-        fetchUsersData
+        fetchUsersData,
+        likePost,
+        unLikePost
+
     }
 };
 

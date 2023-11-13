@@ -16,6 +16,8 @@ const postRouter = () => {
     router.get('/getAllPost/:userId', authenticateToken, controllers.fetchPosts);
     router.get("/userPost/:userId", authenticateToken, controllers.fetchUserPosts);
     router.get('/getusersData/:userId', authenticateToken, controllers.getUsersData);
+    router.put("/:postId/like", authenticateToken, controllers.likedPost);
+    router.put("/:postId/unLike", authenticateToken, controllers.unLikePost);
     return router;
 };
 exports.default = postRouter;

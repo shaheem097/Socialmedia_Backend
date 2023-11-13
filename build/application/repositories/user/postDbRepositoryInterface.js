@@ -17,12 +17,20 @@ const postRepository = (repository) => {
     const fetchUsersData = async (userId) => {
         return repository.fetchUsersData(userId);
     };
+    const likePost = async (postId, userId) => {
+        return repository.postLike(postId, userId);
+    };
+    const unLikePost = async (postId, userId) => {
+        return repository.unLike(postId, userId);
+    };
     return {
         addPost,
         getAllPosts,
         fetchPosts,
         fetchUserPosts,
-        fetchUsersData
+        fetchUsersData,
+        likePost,
+        unLikePost
     };
 };
 exports.postRepository = postRepository;

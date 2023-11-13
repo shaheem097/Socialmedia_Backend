@@ -34,10 +34,15 @@ const userRegister = async (user, userRepository, authService) => {
         user.password = encryptPassword;
         const response = await userRepository.addUser(user);
         let userId = response._id;
-        let UserName = response.username;
-        const token = await authService.generateToken(userId.toString(), UserName);
+        let username = response.username;
+        const token = await authService.generateToken(userId.toString(), username);
         console.log(token);
-        const userData = response;
+        const userData = {
+            userId,
+            username,
+            followers: response.followers,
+            following: response.following
+        };
         return { status: true, userData, token };
     }
 };
@@ -85,9 +90,8 @@ const googleLogin = async (user, userRepository, authService) => {
             location: isEmailExist?.location,
             followers: isEmailExist?.followers,
             following: isEmailExist?.following,
-            token: token
         };
-        return { status: true, userData };
+        return { status: true, userData, token };
     }
     else if (isBlockorNot === true) {
         return { blocked: true };
@@ -118,7 +122,6 @@ const otpLogin = async (user, userRepository, authService) => {
         const username = isPhoneExist.username;
         const token = await authService.generateToken(userId.toString(), username);
         const userData = {
-            token: token,
             userId: userId,
             username: isPhoneExist.username,
             dp: isPhoneExist?.dp,
@@ -127,7 +130,7 @@ const otpLogin = async (user, userRepository, authService) => {
             followers: isPhoneExist?.followers,
             following: isPhoneExist?.following,
         };
-        return { status: true, userData };
+        return { status: true, userData, token };
     }
 };
 exports.otpLogin = otpLogin;

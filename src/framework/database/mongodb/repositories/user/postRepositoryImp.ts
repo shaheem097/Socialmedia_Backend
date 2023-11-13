@@ -41,14 +41,45 @@ const fetchUsersData=async (userId:string)=>{
     console.log(data,"postuserssssssssss");
     
     return data
-}  
+} ;
+
+const postLike=async(postId:string,userId:string)=>{
+    console.log(postId,userId);
+    const data:any=await Post.updateOne(
+        {_id:postId,likes:{$ne:userId}},
+        {
+            $addToSet:{
+                likes:userId,
+            },
+        }
+    );
+    return true
+};
+
+const unLike = async (postId: string, userId: string) => {
+    const data: any = await Post.updateOne(
+      { _id: postId },
+      {
+        $pull: {
+          likes: userId,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    return true;
+  };
+
 
     return {
         addPostDetails,
         getAllPosts,
         getPosts,
         fetchUserPost,
-        fetchUsersData
+        fetchUsersData,
+        postLike,
+        unLike
     }
 }
 

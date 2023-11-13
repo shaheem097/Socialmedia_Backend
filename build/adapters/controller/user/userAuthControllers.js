@@ -20,8 +20,8 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         const response = await (0, userAuth_1.userRegister)(user, dbUserRepository, authServices);
         console.log(response, "registerrrrrrr");
         const UserData = response.userData;
-        const token = response.token;
         if (response.status == true) {
+            const token = response.token;
             res.json({ status: true, message: "User registerd", UserData, token });
         }
         else {
@@ -53,7 +53,9 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
             const response = await (0, userAuth_1.googleLogin)(values, dbUserRepository, authServices);
             if (response?.status === true) {
                 if (response.userData) {
-                    res.json({ status: true, message: "User Logged in", response });
+                    const token = response.token;
+                    const userData = response.userData;
+                    res.json({ status: true, message: "User Logged in", userData, token });
                 }
                 else {
                     res.status(500).json({ status: false, message: "User data is undefined" });
@@ -92,7 +94,9 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         const data = { phone };
         (0, userAuth_1.otpLogin)(data, dbUserRepository, authServices).then((response) => {
             if (response?.status === true) {
-                res.json({ status: true, message: "User Logined", response });
+                const userData = response.userData;
+                const token = response.token;
+                res.json({ status: true, message: "User Logined", userData, token });
             }
             else {
                 res.json({ status: false });
@@ -124,7 +128,7 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         }
     });
     const putUnFollow = (0, express_async_handler_1.default)(async (req, res) => {
-        console.log("unfollloolooow");
+        console.log("unfollloolooo");
         try {
             const { id } = req.body;
             const { userId } = req.params;
@@ -137,6 +141,7 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
         }
     });
     const getUserDetails = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log("hhhhhhhhhhhhhhhhhhhhhhhha");
         try {
             const { userId } = req.params;
             const data = await (0, userAuth_1.getUserWithId)(userId, dbUserRepository);
@@ -148,7 +153,6 @@ const authController = (authServiceInterface, authService, UserDbInterface, user
     });
     const checkExistingData = (0, express_async_handler_1.default)(async (req, res) => {
         const { username, phone, email } = req.body;
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhha");
         console.log(req.headers);
         // Initialize the user object with default values
         const user = {

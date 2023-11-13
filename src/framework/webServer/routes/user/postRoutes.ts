@@ -23,6 +23,10 @@ const postRouter =()=>{
 
     router.get('/getusersData/:userId',authenticateToken,controllers.getUsersData)
 
+    router.put("/:postId/like", authenticateToken,controllers.likedPost);
+
+    router.put("/:postId/unLike",authenticateToken, controllers.unLikePost);
+
     return router;
 }
 

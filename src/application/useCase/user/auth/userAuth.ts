@@ -50,13 +50,13 @@ export const userRegister =async(
         const response=await userRepository.addUser(user);
         
         let userId = response._id;
-        let UserName=response.username;
-        const token=await authService.generateToken(userId.toString(),UserName);
+        let username=response.username;
+        const token=await authService.generateToken(userId.toString(),username);
         console.log(token);
         
         const userData={
            userId,
-           UserName,
+           username,
            followers:response.followers,
            following:response.following
 

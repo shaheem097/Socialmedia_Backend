@@ -1,3 +1,4 @@
+import { postRepository } from './../../../repositories/user/postDbRepositoryInterface';
 
 import { getAllUsers } from './userDetails';
 import { postDbInterface } from "../../../repositories/user/postDbRepositoryInterface";
@@ -46,5 +47,31 @@ export const postUsersData=async (
 )=>{
     const usersData:any =await postDbRepository.fetchUsersData(userId);
     return usersData;
-}
+};
+
+export const putLike=async(
+    postId:string,
+    userId:string,
+    postDbRepository:ReturnType<postDbInterface>
+)=>{
+    try {
+        const data = await postDbRepository.likePost(postId, userId);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+};
+
+export const putUnLike = async (
+    postId: string,
+    userId: string,
+    postDbRepository: ReturnType<postDbInterface>
+  ) => {
+    try {
+      const data = await postDbRepository.unLikePost(postId, userId);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
     

@@ -36,12 +36,33 @@ const postRepositoryMongoDb = () => {
         console.log(data, "postuserssssssssss");
         return data;
     };
+    const postLike = async (postId, userId) => {
+        console.log(postId, userId);
+        const data = await postModel_1.default.updateOne({ _id: postId, likes: { $ne: userId } }, {
+            $addToSet: {
+                likes: userId,
+            },
+        });
+        return true;
+    };
+    const unLike = async (postId, userId) => {
+        const data = await postModel_1.default.updateOne({ _id: postId }, {
+            $pull: {
+                likes: userId,
+            },
+        }, {
+            new: true,
+        });
+        return true;
+    };
     return {
         addPostDetails,
         getAllPosts,
         getPosts,
         fetchUserPost,
-        fetchUsersData
+        fetchUsersData,
+        postLike,
+        unLike
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;

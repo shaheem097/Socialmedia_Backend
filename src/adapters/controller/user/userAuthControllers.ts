@@ -185,6 +185,7 @@ const authController=(
       });
 
       const getUserDetails = asyncHandler(async (req: Request, res: Response) => {
+        console.log("hhhhhhhhhhhhhhhhhhhhhhhha");
         try {
  
           const { userId } = req.params;
@@ -198,7 +199,7 @@ const authController=(
       const  checkExistingData = asyncHandler(async (req: Request, res: Response) => {
         
         const { username, phone, email } = req.body;
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhha");
+      
         
         console.log(req.headers);
         
