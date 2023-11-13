@@ -27,6 +27,8 @@ const postRouter =()=>{
 
     router.put("/:postId/unLike",authenticateToken, controllers.unLikePost);
 
+    router.put("/:postId/comment", controllers.addComment);
+
     return router;
 }
 

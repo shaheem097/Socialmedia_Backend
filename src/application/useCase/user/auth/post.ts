@@ -74,4 +74,21 @@ export const putUnLike = async (
       console.log(error);
     }
   };
-    
+
+  export const putComment=async(
+    postId:string,
+    userId:string,
+    comment:string,
+    username:string,
+    postDbRepository:ReturnType<postDbInterface>
+  )=>{
+   
+    try {
+       
+        const data=await postDbRepository.addComment(postId,userId,comment,username)
+        return data;
+    } catch (error) {
+        console.log(error);
+        
+    }
+  }

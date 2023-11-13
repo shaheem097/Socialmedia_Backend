@@ -23,6 +23,9 @@ const postRepository = (repository) => {
     const unLikePost = async (postId, userId) => {
         return repository.unLike(postId, userId);
     };
+    const addComment = async (postId, userId, comment, username) => {
+        return repository.putComment(postId, userId, comment, username);
+    };
     return {
         addPost,
         getAllPosts,
@@ -30,7 +33,8 @@ const postRepository = (repository) => {
         fetchUserPosts,
         fetchUsersData,
         likePost,
-        unLikePost
+        unLikePost,
+        addComment
     };
 };
 exports.postRepository = postRepository;

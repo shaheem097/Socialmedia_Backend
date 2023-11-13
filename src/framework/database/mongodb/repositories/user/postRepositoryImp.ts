@@ -71,6 +71,31 @@ const unLike = async (postId: string, userId: string) => {
     return true;
   };
 
+  
+const putComment=async(
+    postId:string,
+    userId:string,
+    comment:string,
+    username:string
+)=>{
+    const newId=postId.replace(/:/g,"")
+    try {
+      
+        const post=await Post.findByIdAndUpdate(
+            {_id:newId},
+            {$push:{ comments:{userId:userId,comment:comment,username:username}}},
+       
+            {new:true}
+            );    
+            console.log(post);
+            
+        return post;
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
     return {
         addPostDetails,
@@ -79,9 +104,11 @@ const unLike = async (postId: string, userId: string) => {
         fetchUserPost,
         fetchUsersData,
         postLike,
-        unLike
+        unLike,
+        putComment
     }
-}
+};
+
 
 
 export type postRepositoryMongoDb = typeof postRepositoryMongoDb;

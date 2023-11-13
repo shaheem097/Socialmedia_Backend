@@ -36,6 +36,15 @@ const likePost = async (postId: string, userId: string) => {
     return repository.unLike(postId, userId);
   };
 
+  const addComment=async(
+    postId:string,
+    userId:string,
+    comment:string,
+    username:string
+  )=>{
+    return repository.putComment(postId,userId,comment,username)
+  };
+
     return{
         addPost,
         getAllPosts,
@@ -43,7 +52,8 @@ const likePost = async (postId: string, userId: string) => {
         fetchUserPosts,
         fetchUsersData,
         likePost,
-        unLikePost
+        unLikePost,
+        addComment
 
     }
 };

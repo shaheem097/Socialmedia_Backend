@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { postDbInterface } from "../../../application/repositories/user/postDbRepositoryInterface";
 import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repositories/user/postRepositoryImp";
-import {getAllPosts,postData,dataUserPosts,postUsersData,putData,putLike,putUnLike,} from "../../../application/useCase/user/auth/post"
+import {getAllPosts,postData,dataUserPosts,postUsersData,
+        putData,putLike,putUnLike,
+        putComment} from "../../../application/useCase/user/auth/post"
 
 const postControllers = (
     postDbRepository: postDbInterface,
@@ -77,6 +79,21 @@ const unLikePost = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+const addComment=asyncHandler(async(req:Request,res:Response)=>{
+  try {
+    
+    
+    const {postId}=req.params;
+    const {userId,comment,username}=req.body;
+    const data=await putComment(postId,userId,comment,username,postRepository)
+    res.json(data);
+
+  } catch (error) {
+    console.log(error);
+    
+  }
+})
+
   return{
     addPost,
     getAllPost,
@@ -84,7 +101,8 @@ const unLikePost = asyncHandler(async (req: Request, res: Response) => {
     fetchUserPosts,
     getUsersData,
     likedPost,
-    unLikePost
+    unLikePost,
+    addComment
 
   };
 

@@ -55,6 +55,16 @@ const postRepositoryMongoDb = () => {
         });
         return true;
     };
+    const putComment = async (postId, userId, comment, username) => {
+        const newId = postId.replace(/:/g, "");
+        try {
+            const post = await postModel_1.default.findByIdAndUpdate({ _id: newId }, { $push: { comments: { userId: userId, comment: comment, username: username } } });
+            return post;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
     return {
         addPostDetails,
         getAllPosts,
@@ -62,7 +72,8 @@ const postRepositoryMongoDb = () => {
         fetchUserPost,
         fetchUsersData,
         postLike,
-        unLike
+        unLike,
+        putComment
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;

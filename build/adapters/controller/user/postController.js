@@ -37,6 +37,7 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         res.json(data);
     });
     const likedPost = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log('like');
         try {
             const { userId } = req.body;
             const { postId } = req.params;
@@ -49,6 +50,7 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         }
     });
     const unLikePost = (0, express_async_handler_1.default)(async (req, res) => {
+        console.log('Un like');
         try {
             const { userId } = req.body;
             console.log(req.body);
@@ -61,6 +63,17 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
             console.log(error);
         }
     });
+    const addComment = (0, express_async_handler_1.default)(async (req, res) => {
+        try {
+            const { postId } = req.params;
+            const { userId, comment, username } = req.body;
+            const data = await (0, post_1.putComment)(postId, userId, comment, username, postRepository);
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         addPost,
         getAllPost,
@@ -68,7 +81,8 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         fetchUserPosts,
         getUsersData,
         likedPost,
-        unLikePost
+        unLikePost,
+        addComment
     };
 };
 exports.default = postControllers;
