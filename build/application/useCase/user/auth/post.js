@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putComment = exports.putUnLike = exports.putLike = exports.postUsersData = exports.dataUserPosts = exports.postData = exports.getAllPosts = exports.putData = void 0;
+exports.deletePostComment = exports.putComment = exports.putUnLike = exports.putLike = exports.postUsersData = exports.dataUserPosts = exports.postData = exports.getAllPosts = exports.putData = void 0;
 const putData = async (userId, caption, fileUrl, postDbRepository) => {
     const data = await postDbRepository.addPost(userId, caption, fileUrl);
     return data;
@@ -46,9 +46,9 @@ const putUnLike = async (postId, userId, postDbRepository) => {
     }
 };
 exports.putUnLike = putUnLike;
-const putComment = async (postId, userId, comment, username, postDbRepository) => {
+const putComment = async (postId, userId, comment, username, dp, postDbRepository) => {
     try {
-        const data = await postDbRepository.addComment(postId, userId, comment, username);
+        const data = await postDbRepository.addComment(postId, userId, comment, username, dp);
         return data;
     }
     catch (error) {
@@ -56,3 +56,13 @@ const putComment = async (postId, userId, comment, username, postDbRepository) =
     }
 };
 exports.putComment = putComment;
+const deletePostComment = async (postId, userId, index, postDbRepository) => {
+    try {
+        const data = await postDbRepository.deleteComment(postId, userId, index);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.deletePostComment = deletePostComment;

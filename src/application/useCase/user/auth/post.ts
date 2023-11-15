@@ -80,12 +80,28 @@ export const putUnLike = async (
     userId:string,
     comment:string,
     username:string,
+    dp:string,
     postDbRepository:ReturnType<postDbInterface>
   )=>{
    
     try {
        
-        const data=await postDbRepository.addComment(postId,userId,comment,username)
+        const data=await postDbRepository.addComment(postId,userId,comment,username,dp)
+        return data;
+    } catch (error) {
+        console.log(error);
+        
+    }
+  };
+
+  export const deletePostComment=async(
+    postId:string,
+    userId:string,
+    index:number,
+    postDbRepository:ReturnType<postDbInterface>
+  )=>{
+    try {
+        const data=await postDbRepository.deleteComment(postId,userId,index);
         return data;
     } catch (error) {
         console.log(error);

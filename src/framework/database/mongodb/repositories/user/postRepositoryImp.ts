@@ -76,20 +76,44 @@ const putComment=async(
     postId:string,
     userId:string,
     comment:string,
-    username:string
+    username:string,
+    dp:string,
 )=>{
     const newId=postId.replace(/:/g,"")
     try {
       
         const post=await Post.findByIdAndUpdate(
             {_id:newId},
-            {$push:{ comments:{userId:userId,comment:comment,username:username}}},
-       
+            {$push:{ comments:{userId:userId,comment:comment,username:username,dp:dp}}},
+             
             {new:true}
             );    
-            console.log(post);
+         
             
         return post;
+    } catch (error) {
+        console.log(error);
+        
+    }
+};
+
+const postDeleteComment=async(
+    postId:string,
+    userId:string,
+    index:number
+)=>{
+    
+    const newId=postId.replace(/:/g, "");
+    try {
+        const post=await Post.findById(newId)
+        if(!post){
+            return
+        }
+        post.comments.splice(index,1);
+        await post.save();
+        
+        return post
+
     } catch (error) {
         console.log(error);
         
@@ -105,7 +129,8 @@ const putComment=async(
         fetchUsersData,
         postLike,
         unLike,
-        putComment
+        putComment,
+        postDeleteComment
     }
 };
 

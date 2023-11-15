@@ -66,8 +66,19 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
     const addComment = (0, express_async_handler_1.default)(async (req, res) => {
         try {
             const { postId } = req.params;
-            const { userId, comment, username } = req.body;
-            const data = await (0, post_1.putComment)(postId, userId, comment, username, postRepository);
+            const { userId, comment, username, dp } = req.body;
+            const data = await (0, post_1.putComment)(postId, userId, comment, username, dp, postRepository);
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const deleteComment = (0, express_async_handler_1.default)(async (req, res) => {
+        try {
+            const { postId } = req.params;
+            const { userId, index } = req.body;
+            const data = await (0, post_1.deletePostComment)(postId, userId, index, postRepository);
             res.json(data);
         }
         catch (error) {
@@ -82,7 +93,8 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         getUsersData,
         likedPost,
         unLikePost,
-        addComment
+        addComment,
+        deleteComment
     };
 };
 exports.default = postControllers;

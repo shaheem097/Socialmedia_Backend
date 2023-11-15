@@ -40,10 +40,19 @@ const likePost = async (postId: string, userId: string) => {
     postId:string,
     userId:string,
     comment:string,
-    username:string
+    username:string,
+    dp:string,
   )=>{
-    return repository.putComment(postId,userId,comment,username)
+    return repository.putComment(postId,userId,comment,username,dp)
   };
+
+  const deleteComment=async(
+    postId:string,
+    userId:string,
+    index:number
+  )=>{
+    return repository.postDeleteComment(postId,userId,index)
+  }
 
     return{
         addPost,
@@ -53,7 +62,8 @@ const likePost = async (postId: string, userId: string) => {
         fetchUsersData,
         likePost,
         unLikePost,
-        addComment
+        addComment,
+        deleteComment
 
     }
 };

@@ -29,6 +29,8 @@ const postRouter =()=>{
 
     router.put("/:postId/comment", controllers.addComment);
 
+    router.put("/:postId/delete-comment", controllers.deleteComment);
+
     return router;
 }
 

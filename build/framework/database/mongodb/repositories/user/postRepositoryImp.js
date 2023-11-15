@@ -55,10 +55,26 @@ const postRepositoryMongoDb = () => {
         });
         return true;
     };
-    const putComment = async (postId, userId, comment, username) => {
+    const putComment = async (postId, userId, comment, username, dp) => {
         const newId = postId.replace(/:/g, "");
         try {
-            const post = await postModel_1.default.findByIdAndUpdate({ _id: newId }, { $push: { comments: { userId: userId, comment: comment, username: username } } });
+            const post = await postModel_1.default.findByIdAndUpdate({ _id: newId }, { $push: { comments: { userId: userId, comment: comment, username: username, dp: dp } } }, { new: true });
+            console.log(post);
+            return post;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    const postDeleteComment = async (postId, userId, index) => {
+        const newId = postId.replace(/:/g, "");
+        try {
+            const post = await postModel_1.default.findById(newId);
+            if (!post) {
+                return;
+            }
+            post.comments.splice(index, 1);
+            await post.save();
             return post;
         }
         catch (error) {
@@ -73,7 +89,8 @@ const postRepositoryMongoDb = () => {
         fetchUsersData,
         postLike,
         unLike,
-        putComment
+        putComment,
+        postDeleteComment
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;

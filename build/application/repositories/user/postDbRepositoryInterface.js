@@ -23,8 +23,11 @@ const postRepository = (repository) => {
     const unLikePost = async (postId, userId) => {
         return repository.unLike(postId, userId);
     };
-    const addComment = async (postId, userId, comment, username) => {
-        return repository.putComment(postId, userId, comment, username);
+    const addComment = async (postId, userId, comment, username, dp) => {
+        return repository.putComment(postId, userId, comment, username, dp);
+    };
+    const deleteComment = async (postId, userId, index) => {
+        return repository.postDeleteComment(postId, userId, index);
     };
     return {
         addPost,
@@ -34,7 +37,8 @@ const postRepository = (repository) => {
         fetchUsersData,
         likePost,
         unLikePost,
-        addComment
+        addComment,
+        deleteComment
     };
 };
 exports.postRepository = postRepository;

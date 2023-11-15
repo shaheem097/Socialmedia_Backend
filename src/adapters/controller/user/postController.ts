@@ -4,7 +4,7 @@ import { postDbInterface } from "../../../application/repositories/user/postDbRe
 import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repositories/user/postRepositoryImp";
 import {getAllPosts,postData,dataUserPosts,postUsersData,
         putData,putLike,putUnLike,
-        putComment} from "../../../application/useCase/user/auth/post"
+        putComment,deletePostComment} from "../../../application/useCase/user/auth/post"
 
 const postControllers = (
     postDbRepository: postDbInterface,
@@ -84,15 +84,34 @@ const addComment=asyncHandler(async(req:Request,res:Response)=>{
     
     
     const {postId}=req.params;
-    const {userId,comment,username}=req.body;
-    const data=await putComment(postId,userId,comment,username,postRepository)
+    const {userId,comment,username,dp}=req.body;
+    const data=await putComment(postId,userId,comment,username,dp,postRepository)
     res.json(data);
 
   } catch (error) {
     console.log(error);
     
   }
+});
+
+const deleteComment=asyncHandler(async(req:Request,res:Response)=>{
+  try{
+    const {postId}=req.params;
+    const {userId,index}=req.body;
+    const data=await deletePostComment(
+      postId,
+      userId,
+      index,
+      postRepository
+    );
+    res.json(data)
+  }catch(error){
+    console.log(error);
+    
+  }
 })
+
+
 
   return{
     addPost,
@@ -102,7 +121,8 @@ const addComment=asyncHandler(async(req:Request,res:Response)=>{
     getUsersData,
     likedPost,
     unLikePost,
-    addComment
+    addComment,
+    deleteComment
 
   };
 
