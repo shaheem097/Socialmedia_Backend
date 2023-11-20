@@ -1,3 +1,4 @@
+import { postEdit } from './../../useCase/user/auth/post';
 
 import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repositories/user/postRepositoryImp";
 
@@ -59,6 +60,11 @@ const likePost = async (postId: string, userId: string) => {
     return repository.postDelete(postId);
   }
 
+  const editPost=async(postId:string,text:string)=>{
+    
+    return repository.postEdit(postId,text)
+  }
+
   
 
 
@@ -72,7 +78,8 @@ const likePost = async (postId: string, userId: string) => {
         unLikePost,
         addComment,
         deleteComment,
-        deletePost
+        deletePost,
+        editPost
 
     }
 };

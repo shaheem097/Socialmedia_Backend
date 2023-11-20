@@ -130,7 +130,25 @@ const postDelete = async(postId:string)=>{
 }
 
 
-
+const postEdit=async(postId:string,text:string)=>{
+    try {
+        await Post.updateOne(
+            {_id:postId},
+            {
+                $set:{
+                    description:text,
+                },
+            }
+        ).then((res)=>{
+            console.log(res,"editpost");
+            
+            return true
+        })
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
 
 
@@ -144,7 +162,8 @@ const postDelete = async(postId:string)=>{
         unLike,
         putComment,
         postDeleteComment,
-        postDelete
+        postDelete,
+        postEdit
     }
 };
 

@@ -15,8 +15,6 @@ const postRouter =()=>{
     
     router.post("/:userId",authenticateToken,controllers.addPost)
     
-    // router.get('/getAllPost',authenticateToken,controllers.getAllPost)
-
     router.get('/getAllPost/:userId',authenticateToken,controllers.fetchPosts)
 
     router.get("/userPost/:userId",authenticateToken, controllers.fetchUserPosts);
@@ -31,7 +29,9 @@ const postRouter =()=>{
 
     router.put("/:postId/delete-comment",authenticateToken, controllers.deleteComment);
 
-    router.delete("/:postId/deletepost",authenticateToken,controllers.deletePost)
+    router.delete("/:postId/deletepost",authenticateToken,controllers.deletePost);
+
+    router.post("/:postId/editPost",authenticateToken,controllers.editPost)
 
     return router;
 }

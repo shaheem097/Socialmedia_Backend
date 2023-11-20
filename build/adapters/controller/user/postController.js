@@ -8,7 +8,6 @@ const post_1 = require("../../../application/useCase/user/auth/post");
 const postControllers = (postDbRepository, postDbRepositoryService) => {
     const postRepository = postDbRepository(postDbRepositoryService());
     const addPost = (0, express_async_handler_1.default)(async (req, res) => {
-        console.log(req.body, "vannnnnnnnnnnnnnnnnnu");
         const { caption, fileUrl } = req.body;
         if (!fileUrl) {
             return;
@@ -90,6 +89,16 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         await (0, post_1.postDelete)(postId, postRepository);
         res.json({ status: true });
     });
+    const editPost = (0, express_async_handler_1.default)(async (req, res) => {
+        try {
+            const { id, text } = req.body;
+            const data = await (0, post_1.postEdit)(id, text, postRepository);
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         addPost,
         getAllPost,
@@ -100,7 +109,8 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         unLikePost,
         addComment,
         deleteComment,
-        deletePost
+        deletePost,
+        editPost
     };
 };
 exports.default = postControllers;

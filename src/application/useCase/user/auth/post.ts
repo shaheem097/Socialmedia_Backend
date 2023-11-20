@@ -116,3 +116,15 @@ export const putUnLike = async (
     const data:any=await postDbRepository.deletePost(postId)
     return data;
   }
+
+
+  export const postEdit=async(
+
+    postId:string,
+    text:string,
+    postDbRepository:ReturnType<postDbInterface>
+  )=>{
+    
+    await postDbRepository.editPost(postId,text)
+    return true
+  }

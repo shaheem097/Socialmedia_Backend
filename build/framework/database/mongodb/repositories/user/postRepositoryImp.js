@@ -89,6 +89,22 @@ const postRepositoryMongoDb = () => {
             console.log(error);
         }
     };
+    const postEdit = async (postId, text) => {
+        try {
+            console.log("vannnnnnnnnnnnnnnnnnu");
+            await postModel_1.default.updateOne({ _id: postId }, {
+                $set: {
+                    description: text,
+                },
+            }).then((res) => {
+                console.log(res, "editpost");
+                return true;
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
     return {
         addPostDetails,
         getAllPosts,
@@ -99,7 +115,8 @@ const postRepositoryMongoDb = () => {
         unLike,
         putComment,
         postDeleteComment,
-        postDelete
+        postDelete,
+        postEdit
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;

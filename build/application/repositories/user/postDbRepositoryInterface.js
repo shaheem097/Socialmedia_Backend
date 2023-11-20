@@ -32,6 +32,9 @@ const postRepository = (repository) => {
     const deletePost = async (postId) => {
         return repository.postDelete(postId);
     };
+    const editPost = async (postId, text) => {
+        return repository.postEdit(postId, text);
+    };
     return {
         addPost,
         getAllPosts,
@@ -42,7 +45,8 @@ const postRepository = (repository) => {
         unLikePost,
         addComment,
         deleteComment,
-        deletePost
+        deletePost,
+        editPost
     };
 };
 exports.postRepository = postRepository;

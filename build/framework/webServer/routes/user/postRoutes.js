@@ -12,7 +12,6 @@ const postRouter = () => {
     const router = express_1.default.Router();
     const controllers = (0, postController_1.default)(postDbRepositoryInterface_1.postRepository, postRepositoryImp_1.postRepositoryMongoDb);
     router.post("/:userId", authenticateToken, controllers.addPost);
-    // router.get('/getAllPost',authenticateToken,controllers.getAllPost)
     router.get('/getAllPost/:userId', authenticateToken, controllers.fetchPosts);
     router.get("/userPost/:userId", authenticateToken, controllers.fetchUserPosts);
     router.get('/getusersData/:userId', authenticateToken, controllers.getUsersData);
@@ -21,6 +20,7 @@ const postRouter = () => {
     router.put("/:postId/comment", authenticateToken, controllers.addComment);
     router.put("/:postId/delete-comment", authenticateToken, controllers.deleteComment);
     router.delete("/:postId/deletepost", authenticateToken, controllers.deletePost);
+    router.post("/edit_post", authenticateToken, controllers.editPost);
     return router;
 };
 exports.default = postRouter;

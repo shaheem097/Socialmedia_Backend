@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { postDbInterface } from "../../../application/repositories/user/postDbRepositoryInterface";
+import { postDbInterface, postRepository } from "../../../application/repositories/user/postDbRepositoryInterface";
 import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repositories/user/postRepositoryImp";
 import {getAllPosts,postData,dataUserPosts,postUsersData,
         putData,putLike,putUnLike,
         putComment,deletePostComment,
-        postDelete} from "../../../application/useCase/user/auth/post"
+        postDelete,postEdit} from "../../../application/useCase/user/auth/post"
 
 const postControllers = (
     postDbRepository: postDbInterface,
@@ -14,7 +14,7 @@ const postControllers = (
     const postRepository = postDbRepository(postDbRepositoryService());
 
 const addPost = asyncHandler(async (req: Request, res: Response) => {
-    console.log(req.body,"vannnnnnnnnnnnnnnnnnu");
+    
     
     const { caption, fileUrl} = req.body;
     if (!fileUrl) {
@@ -118,7 +118,19 @@ const deletePost =asyncHandler(async(req:Request,res:Response)=>{
   res.json({status:true})
 })
 
-
+const editPost=asyncHandler(async(req:Request,res:Response)=>{
+ 
+  
+  try {
+    const {postId}=req.params;
+    const {text}=req.body;
+    const data=await postEdit(postId,text,postRepository);
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    
+  }
+})
 
   return{
     addPost,
@@ -130,7 +142,8 @@ const deletePost =asyncHandler(async(req:Request,res:Response)=>{
     unLikePost,
     addComment,
     deleteComment,
-    deletePost
+    deletePost,
+    editPost
 
   };
 
