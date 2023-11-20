@@ -128,3 +128,15 @@ export const putUnLike = async (
     await postDbRepository.editPost(postId,text)
     return true
   }
+
+  export const addReport=async(postId:string,userId:string,reason:string,
+    postDbRepository:ReturnType<postDbInterface>
+    )=>{
+      try {
+        const data=await postDbRepository.reportPost(postId,userId,reason)
+        return data
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }

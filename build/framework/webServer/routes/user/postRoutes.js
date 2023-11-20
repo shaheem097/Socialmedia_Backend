@@ -20,7 +20,8 @@ const postRouter = () => {
     router.put("/:postId/comment", authenticateToken, controllers.addComment);
     router.put("/:postId/delete-comment", authenticateToken, controllers.deleteComment);
     router.delete("/:postId/deletepost", authenticateToken, controllers.deletePost);
-    router.post("/edit_post", authenticateToken, controllers.editPost);
+    router.post("/:postId/editPost", authenticateToken, controllers.editPost);
+    router.put('/:postId/report-post', authenticateToken, controllers.reportPost);
     return router;
 };
 exports.default = postRouter;

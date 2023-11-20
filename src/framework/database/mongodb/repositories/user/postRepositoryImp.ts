@@ -36,10 +36,7 @@ const fetchUserPost = async (userId: string) => {
 
 
 const fetchUsersData=async (userId:string)=>{
-    const data=await User.findById(userId);
-
-    console.log(data,"postuserssssssssss");
-    
+    const data=await User.findById(userId);    
     return data
 } ;
 
@@ -151,6 +148,33 @@ const postEdit=async(postId:string,text:string)=>{
 }
 
 
+const addReport=async(postId:string,userId:string,reason:string)=>{
+    try {
+        const newId=postId.replace(/:/g,"");
+        const post =await Post.findById(newId)
+
+
+        if(post){
+            const isUserReported=post?.report?.some((report)=>report?.userId===userId)
+
+            if(!isUserReported){
+                post?.report?.push({userId:userId,reason:reason})
+                const updatedPost=await post.save()
+                return updatedPost
+            }else{
+
+                return false
+            }
+        }else{
+            return false
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+
 
     return {
         addPostDetails,
@@ -163,7 +187,8 @@ const postEdit=async(postId:string,text:string)=>{
         putComment,
         postDeleteComment,
         postDelete,
-        postEdit
+        postEdit,
+        addReport
     }
 };
 

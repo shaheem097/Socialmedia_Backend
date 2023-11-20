@@ -5,7 +5,7 @@ import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repos
 import {getAllPosts,postData,dataUserPosts,postUsersData,
         putData,putLike,putUnLike,
         putComment,deletePostComment,
-        postDelete,postEdit} from "../../../application/useCase/user/auth/post"
+        postDelete,postEdit,addReport} from "../../../application/useCase/user/auth/post"
 
 const postControllers = (
     postDbRepository: postDbInterface,
@@ -132,6 +132,18 @@ const editPost=asyncHandler(async(req:Request,res:Response)=>{
   }
 })
 
+const reportPost=asyncHandler(async(req:Request,res:Response)=>{
+  try {
+    const {postId}=req.params;
+    const {userId,reason}=req.body
+    const data=await addReport(postId,userId,reason,postRepository)
+    res.json(data)
+  } catch (error) {
+    console.log(error);
+    
+  }
+})
+
   return{
     addPost,
     getAllPost,
@@ -143,7 +155,8 @@ const editPost=asyncHandler(async(req:Request,res:Response)=>{
     addComment,
     deleteComment,
     deletePost,
-    editPost
+    editPost,
+    reportPost
 
   };
 

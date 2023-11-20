@@ -33,7 +33,6 @@ const postRepositoryMongoDb = () => {
     };
     const fetchUsersData = async (userId) => {
         const data = await userModel_1.default.findById(userId);
-        console.log(data, "postuserssssssssss");
         return data;
     };
     const postLike = async (postId, userId) => {
@@ -91,7 +90,6 @@ const postRepositoryMongoDb = () => {
     };
     const postEdit = async (postId, text) => {
         try {
-            console.log("vannnnnnnnnnnnnnnnnnu");
             await postModel_1.default.updateOne({ _id: postId }, {
                 $set: {
                     description: text,
@@ -105,6 +103,30 @@ const postRepositoryMongoDb = () => {
             console.log(error);
         }
     };
+    const addReport = async (postId, userId, reason) => {
+        try {
+            const newId = postId.replace(/:/g, "");
+            const post = await postModel_1.default.findById(newId);
+            if (post) {
+                const isUserReported = post?.report?.some((report) => report?.userId === userId);
+                if (!isUserReported) {
+                    post?.report?.push({ userId: userId, reason: reason });
+                    const updatedPost = await post.save();
+                    return updatedPost;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
+    };
     return {
         addPostDetails,
         getAllPosts,
@@ -116,7 +138,8 @@ const postRepositoryMongoDb = () => {
         putComment,
         postDeleteComment,
         postDelete,
-        postEdit
+        postEdit,
+        addReport
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;

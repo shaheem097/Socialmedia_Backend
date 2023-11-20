@@ -35,6 +35,9 @@ const postRepository = (repository) => {
     const editPost = async (postId, text) => {
         return repository.postEdit(postId, text);
     };
+    const reportPost = async (postId, userId, reason) => {
+        return repository.addReport(postId, userId, reason);
+    };
     return {
         addPost,
         getAllPosts,
@@ -46,7 +49,8 @@ const postRepository = (repository) => {
         addComment,
         deleteComment,
         deletePost,
-        editPost
+        editPost,
+        reportPost
     };
 };
 exports.postRepository = postRepository;

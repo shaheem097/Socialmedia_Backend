@@ -33,6 +33,8 @@ const postRouter =()=>{
 
     router.post("/:postId/editPost",authenticateToken,controllers.editPost)
 
+    router.put('/:postId/report-post',authenticateToken,controllers.reportPost)
+
     return router;
 }
 

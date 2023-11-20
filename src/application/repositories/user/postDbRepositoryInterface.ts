@@ -65,7 +65,9 @@ const likePost = async (postId: string, userId: string) => {
     return repository.postEdit(postId,text)
   }
 
-  
+  const reportPost = async (postId: string, userId: string, reason: string) => {
+    return repository.addReport(postId,userId,reason)
+  };
 
 
     return{
@@ -79,7 +81,8 @@ const likePost = async (postId: string, userId: string) => {
         addComment,
         deleteComment,
         deletePost,
-        editPost
+        editPost,
+        reportPost
 
     }
 };

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postEdit = exports.postDelete = exports.deletePostComment = exports.putComment = exports.putUnLike = exports.putLike = exports.postUsersData = exports.dataUserPosts = exports.postData = exports.getAllPosts = exports.putData = void 0;
+exports.addReport = exports.postEdit = exports.postDelete = exports.deletePostComment = exports.putComment = exports.putUnLike = exports.putLike = exports.postUsersData = exports.dataUserPosts = exports.postData = exports.getAllPosts = exports.putData = void 0;
 const putData = async (userId, caption, fileUrl, postDbRepository) => {
     const data = await postDbRepository.addPost(userId, caption, fileUrl);
     return data;
@@ -76,3 +76,13 @@ const postEdit = async (postId, text, postDbRepository) => {
     return true;
 };
 exports.postEdit = postEdit;
+const addReport = async (postId, userId, reason, postDbRepository) => {
+    try {
+        const data = await postDbRepository.reportPost(postId, userId, reason);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.addReport = addReport;
