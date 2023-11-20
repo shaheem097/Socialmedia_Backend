@@ -4,7 +4,8 @@ import { postDbInterface } from "../../../application/repositories/user/postDbRe
 import { postRepositoryMongoDb } from "../../../framework/database/mongodb/repositories/user/postRepositoryImp";
 import {getAllPosts,postData,dataUserPosts,postUsersData,
         putData,putLike,putUnLike,
-        putComment,deletePostComment} from "../../../application/useCase/user/auth/post"
+        putComment,deletePostComment,
+        postDelete} from "../../../application/useCase/user/auth/post"
 
 const postControllers = (
     postDbRepository: postDbInterface,
@@ -109,6 +110,12 @@ const deleteComment=asyncHandler(async(req:Request,res:Response)=>{
     console.log(error);
     
   }
+});
+
+const deletePost =asyncHandler(async(req:Request,res:Response)=>{
+  const {postId}=req.params;
+  await postDelete(postId,postRepository);
+  res.json({status:true})
 })
 
 
@@ -122,7 +129,8 @@ const deleteComment=asyncHandler(async(req:Request,res:Response)=>{
     likedPost,
     unLikePost,
     addComment,
-    deleteComment
+    deleteComment,
+    deletePost
 
   };
 

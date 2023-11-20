@@ -18,8 +18,9 @@ const postRouter = () => {
     router.get('/getusersData/:userId', authenticateToken, controllers.getUsersData);
     router.put("/:postId/like", authenticateToken, controllers.likedPost);
     router.put("/:postId/unLike", authenticateToken, controllers.unLikePost);
-    router.put("/:postId/comment", controllers.addComment);
-    router.put("/:postId/delete-comment", controllers.deleteComment);
+    router.put("/:postId/comment", authenticateToken, controllers.addComment);
+    router.put("/:postId/delete-comment", authenticateToken, controllers.deleteComment);
+    router.delete("/:postId/deletepost", authenticateToken, controllers.deletePost);
     return router;
 };
 exports.default = postRouter;

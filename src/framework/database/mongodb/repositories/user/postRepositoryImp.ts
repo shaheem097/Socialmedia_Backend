@@ -120,6 +120,19 @@ const postDeleteComment=async(
     }
 }
 
+const postDelete = async(postId:string)=>{
+    try {
+        await Post.deleteOne({_id:postId});
+        return true
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
 
     return {
         addPostDetails,
@@ -130,10 +143,9 @@ const postDeleteComment=async(
         postLike,
         unLike,
         putComment,
-        postDeleteComment
+        postDeleteComment,
+        postDelete
     }
 };
-
-
 
 export type postRepositoryMongoDb = typeof postRepositoryMongoDb;

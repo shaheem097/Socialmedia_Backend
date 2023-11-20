@@ -107,4 +107,12 @@ export const putUnLike = async (
         console.log(error);
         
     }
+  };
+
+  export const postDelete=async(
+    postId:string,
+    postDbRepository:ReturnType<postDbInterface>
+  )=>{
+    const data:any=await postDbRepository.deletePost(postId)
+    return data;
   }

@@ -54,6 +54,14 @@ const likePost = async (postId: string, userId: string) => {
     return repository.postDeleteComment(postId,userId,index)
   }
 
+
+  const deletePost=async(postId:string)=>{
+    return repository.postDelete(postId);
+  }
+
+  
+
+
     return{
         addPost,
         getAllPosts,
@@ -63,7 +71,8 @@ const likePost = async (postId: string, userId: string) => {
         likePost,
         unLikePost,
         addComment,
-        deleteComment
+        deleteComment,
+        deletePost
 
     }
 };

@@ -27,9 +27,11 @@ const postRouter =()=>{
 
     router.put("/:postId/unLike",authenticateToken, controllers.unLikePost);
 
-    router.put("/:postId/comment", controllers.addComment);
+    router.put("/:postId/comment",authenticateToken, controllers.addComment);
 
-    router.put("/:postId/delete-comment", controllers.deleteComment);
+    router.put("/:postId/delete-comment",authenticateToken, controllers.deleteComment);
+
+    router.delete("/:postId/deletepost",authenticateToken,controllers.deletePost)
 
     return router;
 }

@@ -85,6 +85,11 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
             console.log(error);
         }
     });
+    const deletePost = (0, express_async_handler_1.default)(async (req, res) => {
+        const { postId } = req.params;
+        await (0, post_1.postDelete)(postId, postRepository);
+        res.json({ status: true });
+    });
     return {
         addPost,
         getAllPost,
@@ -94,7 +99,8 @@ const postControllers = (postDbRepository, postDbRepositoryService) => {
         likedPost,
         unLikePost,
         addComment,
-        deleteComment
+        deleteComment,
+        deletePost
     };
 };
 exports.default = postControllers;

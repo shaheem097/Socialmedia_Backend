@@ -59,7 +59,6 @@ const postRepositoryMongoDb = () => {
         const newId = postId.replace(/:/g, "");
         try {
             const post = await postModel_1.default.findByIdAndUpdate({ _id: newId }, { $push: { comments: { userId: userId, comment: comment, username: username, dp: dp } } }, { new: true });
-            console.log(post);
             return post;
         }
         catch (error) {
@@ -81,6 +80,15 @@ const postRepositoryMongoDb = () => {
             console.log(error);
         }
     };
+    const postDelete = async (postId) => {
+        try {
+            await postModel_1.default.deleteOne({ _id: postId });
+            return true;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
     return {
         addPostDetails,
         getAllPosts,
@@ -90,7 +98,8 @@ const postRepositoryMongoDb = () => {
         postLike,
         unLike,
         putComment,
-        postDeleteComment
+        postDeleteComment,
+        postDelete
     };
 };
 exports.postRepositoryMongoDb = postRepositoryMongoDb;
