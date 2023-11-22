@@ -137,6 +137,7 @@ const addFollower=async (friendId:string,userId:string)=>{
 };
 
 const removeFollower = async (friendId: string, userId: string) => {
+  
   try {
     const data = await User.findByIdAndUpdate(
       { _id: userId },

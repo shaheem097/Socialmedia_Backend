@@ -32,7 +32,6 @@ const authController=(
       
       
         const response:any = await userRegister(user,dbUserRepository,authServices)
-        console.log(response,"registerrrrrrr");
        const UserData=response.userData
        if(response.status==true){
          
@@ -156,7 +155,6 @@ const authController=(
 
 
     const putFollower=asyncHandler(async(req:Request,res:Response)=>{
-      console.log("folllllllllllllllllow");
       
         try{
             const {id}=req.body;
@@ -172,7 +170,6 @@ const authController=(
     });
 
     const putUnFollow = asyncHandler(async (req: Request, res: Response) => {
-      console.log("unfollloolooo");
       
         try {
           const { id } = req.body;
@@ -185,7 +182,6 @@ const authController=(
       });
 
       const getUserDetails = asyncHandler(async (req: Request, res: Response) => {
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhha");
         try {
  
           const { userId } = req.params;

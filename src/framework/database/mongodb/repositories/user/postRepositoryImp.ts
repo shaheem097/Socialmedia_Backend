@@ -30,7 +30,6 @@ const getPosts =async(userId:string)=>{
         userId: { $in: followingIds },
         adminDeleted: { $ne: Boolean(true.toString()) }, // Exclude posts with adminDeleted: true
       });
-    console.log(data,"postssssssss");
     
     return data;
 }

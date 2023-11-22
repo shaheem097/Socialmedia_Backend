@@ -24,12 +24,17 @@ const postRepositoryMongoDb = () => {
         const user = await userModel_1.default.findById(userId);
         const followingIds = user.following;
         followingIds.push(userId);
-        const data = await postModel_1.default.find({ userId: { $in: followingIds, adminDeleted: false, } });
-        console.log(data, "postssssssss");
+        const data = await postModel_1.default.find({
+            userId: { $in: followingIds },
+            adminDeleted: { $ne: Boolean(true.toString()) }, // Exclude posts with adminDeleted: true
+        });
         return data;
     };
     const fetchUserPost = async (userId) => {
-        const data = await postModel_1.default.find({ userId: userId });
+        const data = await postModel_1.default.find({
+            userId: userId,
+            adminDeleted: false, // Add this condition to exclude adminDeleted: true posts
+        });
         return data;
     };
     const fetchUsersData = async (userId) => {
