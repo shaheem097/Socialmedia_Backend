@@ -21,6 +21,9 @@ const adminAuthRouter = () => {
     router.get("/view-users", adminauthenticateToken, controllers.getUsers);
     router.put('/block/:userId', adminauthenticateToken, controllers.blockUser);
     router.put('/unblock/:userId', adminauthenticateToken, controllers.unblockUser);
+    router.get('/reported-posts', adminauthenticateToken, controllers.reportedPosts);
+    router.put("/reported-remove", controllers.reportRemove);
+    router.put('/confirm-report/:postId', controllers.confirmReport);
     return router;
 };
 exports.default = adminAuthRouter;

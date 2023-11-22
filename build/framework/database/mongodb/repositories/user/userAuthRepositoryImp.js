@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRepositoryMongoDB = void 0;
 const userModel_1 = __importDefault(require("../../models/usermodels/userModel"));
+const postModel_1 = __importDefault(require("../../models/usermodels/postModel"));
 const userRepositoryMongoDB = () => {
     const addUser = async (user) => {
         const newUser = new userModel_1.default(user);
@@ -131,6 +132,45 @@ const userRepositoryMongoDB = () => {
             console.log(error);
         }
     };
+    const getReportedPosts = async () => {
+        try {
+            const reportedPosts = await postModel_1.default.find({
+                report: { $exists: true, $not: { $size: 0 } }
+            });
+            return reportedPosts;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    const removeReport = async (postId, id) => {
+        try {
+            const post = await postModel_1.default.findById(postId);
+            if (!post) {
+                return;
+            }
+            post.report.splice(0, 1);
+            await post.save();
+            return post;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    const reportConfirm = async (postId) => {
+        try {
+            const post = await postModel_1.default.findById(postId);
+            if (!post) {
+                return;
+            }
+            ;
+            post.adminDeleted = true;
+            return await post.save();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
     return {
         addUser,
         getUserByEmail,
@@ -146,6 +186,9 @@ const userRepositoryMongoDB = () => {
         removeFollower,
         getUserWidget,
         updateUserData,
+        getReportedPosts,
+        removeReport,
+        reportConfirm
     };
 };
 exports.userRepositoryMongoDB = userRepositoryMongoDB;

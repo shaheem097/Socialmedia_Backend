@@ -41,6 +41,15 @@ const userDbRepository = (repository) => {
     const updateUser = async (username, email, phone, bio, location, profileUrl, userId) => {
         return repository.updateUserData(username, email, phone, bio, location, profileUrl, userId);
     };
+    const getPostsReported = async () => {
+        return repository.getReportedPosts();
+    };
+    const reportRemove = async (postId, id) => {
+        return repository.removeReport(postId, id);
+    };
+    const confirmReport = async (postId) => {
+        return repository.reportConfirm(postId);
+    };
     return {
         addUser,
         getUserByEmail,
@@ -55,6 +64,9 @@ const userDbRepository = (repository) => {
         removeFollow,
         getUserIdProfile,
         updateUser,
+        getPostsReported,
+        reportRemove,
+        confirmReport
     };
 };
 exports.userDbRepository = userDbRepository;

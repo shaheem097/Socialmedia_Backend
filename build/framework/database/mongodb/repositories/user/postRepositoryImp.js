@@ -24,7 +24,8 @@ const postRepositoryMongoDb = () => {
         const user = await userModel_1.default.findById(userId);
         const followingIds = user.following;
         followingIds.push(userId);
-        const data = await postModel_1.default.find({ userId: { $in: followingIds } });
+        const data = await postModel_1.default.find({ userId: { $in: followingIds, adminDeleted: false, } });
+        console.log(data, "postssssssss");
         return data;
     };
     const fetchUserPost = async (userId) => {

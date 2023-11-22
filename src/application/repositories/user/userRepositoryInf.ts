@@ -77,6 +77,18 @@ export const userDbRepository=(
     )
    }
 
+   const getPostsReported = async()=>{
+    return repository.getReportedPosts()
+  }
+
+  const reportRemove = async(postId:string,id:string)=>{
+    return repository.removeReport(postId,id)
+  }
+
+  const confirmReport = async(postId:string)=>{
+    return repository.reportConfirm(postId)
+  }
+
     return{
     addUser,
     getUserByEmail,
@@ -91,6 +103,9 @@ export const userDbRepository=(
     removeFollow,
     getUserIdProfile,
     updateUser,
+    getPostsReported,
+    reportRemove,
+    confirmReport
    
     };
     

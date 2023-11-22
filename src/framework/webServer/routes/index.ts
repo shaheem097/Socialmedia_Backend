@@ -4,6 +4,7 @@ import adminAuthRouter from './admin/AdminRoter'
 import postRouter from './user/postRoutes'
 
 const routes=(app:Application)=>{
+    
     app.use("/api",authRouter())
 
     app.use('/api/admin',adminAuthRouter());

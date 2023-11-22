@@ -1,4 +1,5 @@
 import User from "../../models/usermodels/userModel"
+import Post from "../../models/usermodels/postModel"
 
 export const userRepositoryMongoDB=()=>{
     const addUser=async(user:{
@@ -197,13 +198,52 @@ const updateUserData=async(
   }
 }
 
+
+const getReportedPosts=async ()=>{
+  try {
+    const reportedPosts=await Post.find({
+      report:{$exists:true,$not:{$size:0}}
+    })
+
+    return reportedPosts
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const removeReport = async (postId: string, id: string) => {
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return;
+    }
+    post.report.splice(0, 1);
+    await post.save();
+    return post;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const  reportConfirm = async(postId:string)=>{
+  try {
+     const post = await Post.findById(postId);
+     if(!post) {return};
+     post.adminDeleted = true;
+    return   await post.save()
+   
+  } catch (error) {
+   console.log(error); 
+  }
+}
+
     return{
         addUser,
         getUserByEmail,
         getUserValid,
         newUserGoogle,
         getUserByPhone,
-     
         getUserByName,
         getAllUsers,
         blockCurrUser,
@@ -213,7 +253,9 @@ const updateUserData=async(
         removeFollower,
         getUserWidget,
         updateUserData,
-
+        getReportedPosts,
+        removeReport,
+        reportConfirm
     }
 
 }

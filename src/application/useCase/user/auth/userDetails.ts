@@ -78,3 +78,35 @@ export const removeFollower = async (
       console.log(error);
     }
   };
+
+
+
+  export const getReportedPosts=async(userRepository:ReturnType<UserDbInterface>)=>{
+    try {
+        const data= await userRepository.getPostsReported();
+        return data
+    } catch (error) {
+        console.log(error);
+        
+    }
+  }
+
+
+  export const removeReport = async(postId:string,id:string,userRepository:ReturnType<UserDbInterface>)=>{
+      
+      try {
+      const data = await userRepository.reportRemove(postId,id);
+      return data
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const reportConfirm = async(postId:string,userRepository:ReturnType<UserDbInterface>)=>{
+    try {
+       const data = await userRepository.confirmReport(postId)
+        return data
+    } catch (error) {
+      console.log(error);
+    }
+  }

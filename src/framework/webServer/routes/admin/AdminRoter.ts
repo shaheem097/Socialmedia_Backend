@@ -28,6 +28,12 @@ const adminAuthRouter=()=>{
 
     router.put('/unblock/:userId',adminauthenticateToken,controllers.unblockUser)
 
+    router.get('/reported-posts',adminauthenticateToken,controllers.reportedPosts)
+
+    router.put("/reported-remove", controllers.reportRemove);
+
+    router.put('/confirm-report/:postId',controllers.confirmReport)
+
     return router
 };
 export default  adminAuthRouter

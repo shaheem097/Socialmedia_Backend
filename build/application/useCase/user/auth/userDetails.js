@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeFollower = exports.addFollower = exports.suggestFriend = exports.unBlockCurrUser = exports.blockCurrUser = exports.getAllUsers = void 0;
+exports.reportConfirm = exports.removeReport = exports.getReportedPosts = exports.removeFollower = exports.addFollower = exports.suggestFriend = exports.unBlockCurrUser = exports.blockCurrUser = exports.getAllUsers = void 0;
 const getAllUsers = async (userRepository) => {
     try {
         const details = await userRepository.getAllUsers();
@@ -61,3 +61,33 @@ const removeFollower = async (friendId, userId, userRepository) => {
     }
 };
 exports.removeFollower = removeFollower;
+const getReportedPosts = async (userRepository) => {
+    try {
+        const data = await userRepository.getPostsReported();
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.getReportedPosts = getReportedPosts;
+const removeReport = async (postId, id, userRepository) => {
+    try {
+        const data = await userRepository.reportRemove(postId, id);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.removeReport = removeReport;
+const reportConfirm = async (postId, userRepository) => {
+    try {
+        const data = await userRepository.confirmReport(postId);
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.reportConfirm = reportConfirm;

@@ -22,17 +22,27 @@ const getAllPosts = async()=>{
     return allPosts;
 };
 const getPosts =async(userId:string)=>{
+
     const user:any =await User.findById(userId);
     const followingIds=user.following;
     followingIds.push(userId)
-    const data=await Post.find({userId:{$in:followingIds}});
+    const data = await Post.find({
+        userId: { $in: followingIds },
+        adminDeleted: { $ne: Boolean(true.toString()) }, // Exclude posts with adminDeleted: true
+      });
+    console.log(data,"postssssssss");
+    
     return data;
 }
 
 const fetchUserPost = async (userId: string) => {
-    const data = await Post.find({ userId: userId });
+    const data = await Post.find({
+      userId: userId,
+      adminDeleted: false, // Add this condition to exclude adminDeleted: true posts
+    });
     return data;
   };
+  
 
 
 const fetchUsersData=async (userId:string)=>{
