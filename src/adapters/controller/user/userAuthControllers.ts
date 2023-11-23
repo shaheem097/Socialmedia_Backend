@@ -155,6 +155,7 @@ const authController=(
 
 
     const putFollower=asyncHandler(async(req:Request,res:Response)=>{
+      console.log("foloooooooooooooooow");
       
         try{
             const {id}=req.body;
@@ -170,6 +171,7 @@ const authController=(
     });
 
     const putUnFollow = asyncHandler(async (req: Request, res: Response) => {
+      console.log("unfoloooooooooooooow");
       
         try {
           const { id } = req.body;
